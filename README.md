@@ -8,5 +8,23 @@ This is a 5GTANGO component to that aims to provide insights for the efficiency 
 # tng-profiler
 5GTANGO Profiler repository
 
+### Documentation
+For get informed about how the profiler is  interacting with other 5GTango components and what kind of APIs exposes please visit the wiki page: https://github.com/sonata-nfv/tng-profiler/wiki
 
+### CI Integration
+All pull requests are automatically tested by Jenkins and will only be accepted if no test is broken.
 
+### License
+
+This 5GTANGO component is published under Apache 2.0 license. Please see the LICENSE file for more details.
+
+### Lead Developers
+
+The following lead developers are responsible for this repository and have admin rights. They can, for example, merge pull requests.
+
+- Eleni Fotopoulou ([@elfo](https://github.com/efotopoulou))
+- Anastasios Zafeiropoulos ([@tzafeir ](https://github.com/azafeiropoulos))
+
+### Feedback-Chanel
+
+* Please use the GitHub issues to report bugs.
