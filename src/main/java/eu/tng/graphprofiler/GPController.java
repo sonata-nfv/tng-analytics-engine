@@ -63,16 +63,23 @@ public class GPController {
         AnalyticService as1 = new AnalyticService();
         as1.setName("ChordDiagram");
         as1.setUrl("/ocpu/library/Physiognomica/R/getChordDiagramFromPrometheusMetrics");
+        as1.setDescription("provide chordDiagram");
+        as1.setConstraints("no constraints. you can select as much metrics you wish. if metrics field is empty then all Prometheus available network service metrics will be participate at the analysis");
         repository.save(as1);
 
         AnalyticService as2 = new AnalyticService();
         as2.setName("TimeSeriesDecomposition");
         as2.setUrl("/ocpu/library/Physiognomica/R/timeSeriesDecomposition");
+        as2.setDescription("provide TimeSeriesDecomposition");
+        as2.setConstraints("you should provide only one analytic metric");
+
         repository.save(as2);
 
         AnalyticService as3 = new AnalyticService();
         as3.setName("LinearRegression");
         as3.setUrl("/ocpu/library/Physiognomica/R/combinePrometheusMetrics");
+        as3.setDescription("provide LinearRegression");
+        as3.setConstraints("you should provide only two analytic metric");
         repository.save(as3);
 
         List<AnalyticService> analyticServicesList = repository.findAll();
@@ -191,10 +198,9 @@ public class GPController {
         HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
 
         AnalyticService as = repository.findByName(name);
-       
-        
-       String analytic_service_url = physiognomicaServerURL + as.getUrl();
-       System.out.println("analytic_service_url"+analytic_service_url);
+
+        String analytic_service_url = physiognomicaServerURL + as.getUrl();
+        System.out.println("analytic_service_url" + analytic_service_url);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response3 = restTemplate

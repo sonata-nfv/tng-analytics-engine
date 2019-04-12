@@ -21,6 +21,10 @@ public class AnalyticService {
     private String name;
 
     private String url;
+    
+    private String description;
+    
+    private String constraints;
 
     public AnalyticService() {
 
@@ -48,6 +52,22 @@ public class AnalyticService {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getConstraints() {
+        return constraints;
+    }
+
+    public void setConstraints(String constraints) {
+        this.constraints = constraints;
     }
 
 }
