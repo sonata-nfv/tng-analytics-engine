@@ -5,6 +5,8 @@
  */
 package eu.tng.graphprofiler;
 
+import eu.tng.repository.dao.AnalyticServiceRepository;
+import eu.tng.repository.domain.AnalyticService;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,6 +35,9 @@ public class GPController {
     @Autowired
     GPService graphProfilerService;
 
+    @Autowired
+    private AnalyticServiceRepository repository;
+
     @Value("${physiognomica.server.url}")
     String physiognomicaServerURL;
 
@@ -47,6 +52,33 @@ public class GPController {
     @RequestMapping("/ping")
     public String ping() {
         return "pong";
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getAnalyticServiceList() {
+        repository.deleteAll();
+
+        // save a couple of customers
+        AnalyticService as1 = new AnalyticService();
+        as1.setName("ChordDiagram");
+        as1.setUrl("/ocpu/library/Physiognomica/R/getChordDiagramFromPrometheusMetrics");
+        repository.save(as1);
+
+        AnalyticService as2 = new AnalyticService();
+        as2.setName("TimeSeriesDecomposition");
+        as2.setUrl("/ocpu/library/Physiognomica/R/timeSeriesDecomposition");
+        repository.save(as2);
+
+        AnalyticService as3 = new AnalyticService();
+        as3.setName("LinearRegression");
+        as3.setUrl("/ocpu/library/Physiognomica/R/combinePrometheusMetrics");
+        repository.save(as3);
+
+        List<AnalyticService> analyticServicesList = repository.findAll();
+        JSONArray JSONArray = new JSONArray(analyticServicesList);
+
+        return JSONArray.toString();
     }
 
     //Fetch all metrics available at prometheus
@@ -146,7 +178,6 @@ public class GPController {
         }
 
         //System.out.println("metrics.toString()" + metrics.toString());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
@@ -159,25 +190,25 @@ public class GPController {
 
         HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
 
-        String analytic_service_url = physiognomicaServerURL + name;
-        //System.out.println("analytic_service_url"+analytic_service_url);
+        AnalyticService as = repository.findByName(name);
+       
+        
+       String analytic_service_url = physiognomicaServerURL + as.getUrl();
+       System.out.println("analytic_service_url"+analytic_service_url);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response3 = restTemplate
                 .postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
 
-         String myresponse ="";
+        String myresponse = "";
         if (null != response3 && null != response3.getStatusCode() && response3
                 .getStatusCode()
                 .is2xxSuccessful()) {
 
-            
-             myresponse = response3.getBody();
-             myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL+"/ocpu/tmp/");
-             System.out.println("myresponse" + myresponse);
+            myresponse = response3.getBody();
+            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+            System.out.println("myresponse" + myresponse);
         }
-        
-        
 
         return myresponse;
 

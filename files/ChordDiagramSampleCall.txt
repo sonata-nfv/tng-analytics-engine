@@ -6,7 +6,7 @@ curl -X POST \
   -d '{"start":"2019-04-10T12:00:00.781Z",
 	"end":"2019-04-10T13:00:00.781Z",
 	"step":"3m",
-    "name":"/ocpu/library/Physiognomica/R/getChordDiagramFromPrometheusMetrics",
+    "name":"ChordDiagram",
     "vendor":"matilda",
 	"enriched":true,
 	"metrics":["netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_softirqs_softirqs_persec_average{chart='\''system.softirqs'\'',dimension='\''BLOCK'\'',family='\''softirqs'\'',instance='\''[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999'\'',job='\''netdata'\''}",

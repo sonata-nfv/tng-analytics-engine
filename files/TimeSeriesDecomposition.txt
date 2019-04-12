@@ -1,12 +1,10 @@
 curl -X POST \
   http://localhost:8082/analytic_service \
   -H 'Content-Type: application/json' \
-  -H 'Postman-Token: c11a63ca-e6f4-4204-b7c6-fb6663659641' \
-  -H 'cache-control: no-cache' \
   -d '{"start":"2019-04-12T07:00:00.781Z",
 	"end":"2019-04-12T13:00:00.781Z",
 	"step":"3m",
-    "name":"/ocpu/library/Physiognomica/R/timeSeriesDecomposition",
+     "name":"TimeSeriesDecomposition",
     "vendor":"matilda",
 	"enriched":true,
 	"metrics":["netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_apps_cpu_system_cpu_time___average{chart='\''apps.cpu_system'\'',dimension='\''containers'\'',family='\''cpu'\'',instance='\''[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999'\'',job='\''netdata'\''}"]

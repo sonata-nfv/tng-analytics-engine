@@ -6,7 +6,7 @@ curl -X POST \
   -d '{"start":"2019-04-10T12:00:00.781Z",
 	"end":"2019-04-10T13:00:00.781Z",
 	"step":"3m",
-    "name":"/ocpu/library/Physiognomica/R/combinePrometheusMetrics",
+    "name":"LinearRegression",
     "vendor":"matilda",
 	"enriched":true,
 	"metrics":["netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_load_load_average{chart='\''system.load'\'',dimension='\''load15'\'',family='\''load'\'',instance='\''[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999'\'',job='\''netdata'\''}","netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_apps_cpu_system_cpu_time___average{chart='\''apps.cpu_system'\'',dimension='\''containers'\'',family='\''cpu'\'',instance='\''[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999'\'',job='\''netdata'\''}"]
