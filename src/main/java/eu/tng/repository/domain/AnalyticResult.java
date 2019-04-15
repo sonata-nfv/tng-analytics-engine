@@ -5,6 +5,7 @@
  */
 package eu.tng.repository.domain;
 
+import org.json.JSONArray;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,22 +13,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  * @author eleni
  */
-@Document(collection = "AnalyticService")
-public class AnalyticService {
+@Document(collection = "AnalyticResult")
+public class AnalyticResult {
 
     @Id
     private String id;
 
-    private String name;
-
-    private String url;
+    private String callbackid;
     
-    private String description;
+    private String analyticServiceName;
+
+    private JSONArray results;
     
-    private String constraints;
 
-    public AnalyticService() {
-
+    public AnalyticResult() {
     }
 
     public String getId() {
@@ -38,36 +37,30 @@ public class AnalyticService {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCallbackid() {
+        return callbackid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCallbackid(String callbackid) {
+        this.callbackid = callbackid;
     }
 
-    public String getUrl() {
-        return url;
+    public String getAnalyticServiceName() {
+        return analyticServiceName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAnalyticServiceName(String analyticServiceName) {
+        this.analyticServiceName = analyticServiceName;
     }
 
-    public String getDescription() {
-        return description;
+    public JSONArray getResults() {
+        return results;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setResults(JSONArray results) {
+        this.results = results;
     }
+    
 
-    public String getConstraints() {
-        return constraints;
-    }
-
-    public void setConstraints(String constraints) {
-        this.constraints = constraints;
-    }
-
+   
 }

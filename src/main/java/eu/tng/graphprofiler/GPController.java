@@ -8,6 +8,7 @@ package eu.tng.graphprofiler;
 import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticService;
 import java.util.List;
+import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +46,8 @@ public class GPController {
     @Value("${prometheus.url}")
     String prometheusURL;
 
+    private static final Logger logger = Logger.getLogger(GPController.class.getName());
+
     @RequestMapping("/")
     public String info() {
         return "Welcome to tng-profiler!";
@@ -52,6 +56,14 @@ public class GPController {
     @RequestMapping("/ping")
     public String ping() {
         return "pong";
+    }
+
+    //Fetch all dimensions for all metrics that contain a specific keyword
+    @RequestMapping(value = "/analytic_service/{callbackid}/status", method = RequestMethod.GET)
+    public String demoAnalyticsServiceCallback(@PathVariable("callbackid") String callbackid) {
+        String loginfo = "Analytic Service with id " + callbackid + " is completed";
+        logger.info(loginfo);
+        return loginfo;
     }
 
     //Fetch all metrics available at prometheus
@@ -158,8 +170,9 @@ public class GPController {
     //name: name of the analytic service to consume
     //metrics: OPTIONAL set of metric names as they are available at prometheus. if is not selected a set of metrics then all metrics of the network service participate to the analysis
     //Example of prometheus query execution: http://212.101.173.101:9090/api/v1/query_range?query=cpu{resource_id=%27091db7f2-68b5-4487-b37c-27282b3381cf%27}&start=2019-02-28T10:10:30.781Z&end=2019-02-28T16:11:00.781Z&step=15s
+    @Async
     @RequestMapping(value = "/analytic_service", method = RequestMethod.POST)
-    public String consumeAnalyticService(@RequestBody String analytic_service_info
+    public void consumeAnalyticService(@RequestBody String analytic_service_info
     ) {
 
         JSONObject analytic_service = new JSONObject(analytic_service_info);
@@ -168,6 +181,7 @@ public class GPController {
         String step = analytic_service.getString("step");//"'3m'"
         String name = analytic_service.getString("name"); //"/ocpu/library/Physiognomica/R/getChordDiagram"
         String vendor = analytic_service.getString("vendor");
+        String callback_url = analytic_service.getString("callback");
 
         JSONArray metrics = null;
         if (analytic_service.has("metrics")) {
@@ -180,9 +194,8 @@ public class GPController {
                 metrics = new JSONArray(metricslist);
             }
 
-        } else {
-            return "undefined metrics parameter";
-        }
+        } 
+        //else {             return "undefined metrics parameter";        }
 
         //System.out.println("metrics.toString()" + metrics.toString());
         HttpHeaders headers = new HttpHeaders();
@@ -203,8 +216,7 @@ public class GPController {
         System.out.println("analytic_service_url" + analytic_service_url);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response3 = restTemplate
-                .postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
+        ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
 
         String myresponse = "";
         if (null != response3 && null != response3.getStatusCode() && response3
@@ -216,7 +228,7 @@ public class GPController {
             System.out.println("myresponse" + myresponse);
         }
 
-        return myresponse;
+        //return myresponse;
 
     }
 
