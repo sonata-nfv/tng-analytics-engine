@@ -5,6 +5,7 @@
  */
 package eu.tng.repository.domain;
 
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,6 +26,8 @@ public class AnalyticService {
     private String description;
     
     private String constraints;
+    
+    private List<String> results;
 
     public AnalyticService() {
 
@@ -68,6 +71,14 @@ public class AnalyticService {
 
     public void setConstraints(String constraints) {
         this.constraints = constraints;
+    }
+
+    public List<String> getResults() {
+        return results;
+    }
+
+    public void setResults(List<String> results) {
+        this.results = results;
     }
 
 }

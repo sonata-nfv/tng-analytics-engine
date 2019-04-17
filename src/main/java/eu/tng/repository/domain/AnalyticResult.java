@@ -5,6 +5,7 @@
  */
 package eu.tng.repository.domain;
 
+import java.util.List;
 import org.json.JSONArray;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,12 +24,12 @@ public class AnalyticResult {
     
     private String analyticServiceName;
 
-    private JSONArray results;
+    private List results;
     
 
     public AnalyticResult() {
     }
-
+    
     public String getId() {
         return id;
     }
@@ -53,14 +54,13 @@ public class AnalyticResult {
         this.analyticServiceName = analyticServiceName;
     }
 
-    public JSONArray getResults() {
+    public List getResults() {
         return results;
     }
 
-    public void setResults(JSONArray results) {
+    public void setResults(List results) {
         this.results = results;
     }
-    
 
    
 }

@@ -5,8 +5,14 @@
  */
 package eu.tng.graphprofiler;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import eu.tng.repository.dao.AnalyticResultRepository;
 import eu.tng.repository.dao.AnalyticServiceRepository;
+import eu.tng.repository.domain.AnalyticResult;
 import eu.tng.repository.domain.AnalyticService;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -38,7 +44,10 @@ public class GPController {
     GPService graphProfilerService;
 
     @Autowired
-    private AnalyticServiceRepository repository;
+    private AnalyticServiceRepository analyticServiceRepository;
+
+    @Autowired
+    private AnalyticResultRepository analyticResulteRepository;
 
     @Value("${physiognomica.server.url}")
     String physiognomicaServerURL;
@@ -63,41 +72,77 @@ public class GPController {
     public String demoAnalyticsServiceCallback(@PathVariable("callbackid") String callbackid) {
         String loginfo = "Analytic Service with id " + callbackid + " is completed";
         logger.info(loginfo);
-        return loginfo;
+        return callbackid;
     }
 
     //Fetch all metrics available at prometheus
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getAnalyticServiceList() {
-        repository.deleteAll();
+        analyticServiceRepository.deleteAll();
 
         // save a couple of customers
         AnalyticService as1 = new AnalyticService();
         as1.setName("ChordDiagram");
         as1.setUrl("/ocpu/library/Physiognomica/R/getChordDiagramFromPrometheusMetrics");
-        as1.setDescription("provide chordDiagram");
-        as1.setConstraints("no constraints. you can select as much metrics you wish. if metrics field is empty then all Prometheus available network service metrics will be participate at the analysis");
-        repository.save(as1);
+        as1.setDescription("Provide a correlogram in the form of an interactive Chord diagram");
+        as1.setConstraints("Select the set of metrics (more than one) to be used for the calculation of the correlation matrix");
+
+        List<String> results1 = new LinkedList<String>();
+        results1.add("correlation_page.html");
+        results1.add("correlation_matrix.csv");
+        results1.add("correlation_matrix.json");
+        results1.add("metrics_appendix.csv");
+        as1.setResults(results1);
+        analyticServiceRepository.save(as1);
 
         AnalyticService as2 = new AnalyticService();
         as2.setName("TimeSeriesDecomposition");
         as2.setUrl("/ocpu/library/Physiognomica/R/timeSeriesDecomposition");
-        as2.setDescription("provide TimeSeriesDecomposition");
-        as2.setConstraints("you should provide only one analytic metric");
+        as2.setDescription("Provide a decomposition of a time series in seasonal, trend, and remainder parts");
+        as2.setConstraints("Select one metric to be used for time series decomposition");
 
-        repository.save(as2);
+        List<String> results2 = new LinkedList<String>();
+        results2.add("time_series_decomposition.html");
+        results2.add("tm_series_decomposition.jpg");
+        as2.setResults(results2);
+        analyticServiceRepository.save(as1);
+
+        analyticServiceRepository.save(as2);
 
         AnalyticService as3 = new AnalyticService();
         as3.setName("LinearRegression");
         as3.setUrl("/ocpu/library/Physiognomica/R/combinePrometheusMetrics");
-        as3.setDescription("provide LinearRegression");
-        as3.setConstraints("you should provide only two analytic metric");
-        repository.save(as3);
+        as3.setDescription("Provide a linear regression model along with a scatterplot");
+        as3.setConstraints("Select the dependent and intenpendent variable for the linear regression model");
+        List<String> results3 = new LinkedList<String>();
+        results3.add("finaldata.csv");
+        results3.add("metricsCombination.html");
+        as3.setResults(results3);
+        analyticServiceRepository.save(as3);
 
-        List<AnalyticService> analyticServicesList = repository.findAll();
-        JSONArray JSONArray = new JSONArray(analyticServicesList);
+        List<AnalyticService> analyticServicesList = analyticServiceRepository.findAll();
+        JSONArray asl = new JSONArray(analyticServicesList);
 
-        return JSONArray.toString();
+        return asl.toString();
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/results/list", method = RequestMethod.GET)
+    public String getAnalyticResultsList() {
+
+        List<AnalyticResult> analyticResultList = analyticResulteRepository.findAll();
+        JSONArray arl = new JSONArray(analyticResultList);
+
+        return arl.toString();
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/results/{callback_id}", method = RequestMethod.GET)
+    public String getAnalyticResultsList(@PathVariable("callback_id") String callback_id) {
+
+        AnalyticResult analyticResult = analyticResulteRepository.findByCallbackid(callback_id);
+        logger.info(callback_id);
+        return new Gson().toJson(analyticResult);
     }
 
     //Fetch all metrics available at prometheus
@@ -194,7 +239,7 @@ public class GPController {
                 metrics = new JSONArray(metricslist);
             }
 
-        } 
+        }
         //else {             return "undefined metrics parameter";        }
 
         //System.out.println("metrics.toString()" + metrics.toString());
@@ -210,7 +255,7 @@ public class GPController {
 
         HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
 
-        AnalyticService as = repository.findByName(name);
+        AnalyticService as = analyticServiceRepository.findByName(name);
 
         String analytic_service_url = physiognomicaServerURL + as.getUrl();
         System.out.println("analytic_service_url" + analytic_service_url);
@@ -225,11 +270,49 @@ public class GPController {
 
             myresponse = response3.getBody();
             myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
-            System.out.println("myresponse" + myresponse);
+
+            String lines[] = myresponse.split("\\r?\\n");
+            JSONArray response = new JSONArray();
+            List<String> resultslist = as.getResults();
+            for (String line : lines) {
+
+                if (resultslist.stream().anyMatch(s -> line.contains(s))) {
+                    if (line.contains("html")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "html");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("csv")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "csv");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("json")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "json");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("jpg") || line.contains("png")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "img");
+                        result.put("result", line);
+                        response.put(result);
+                    }
+                }
+
+            }
+            logger.info(response.toString());
+
+            ResponseEntity<String> callback_response = restTemplate.getForEntity(callback_url, String.class);
+            AnalyticResult analyticresult = new AnalyticResult();
+            analyticresult.setCallbackid(callback_response.getBody());
+            analyticresult.setAnalyticServiceName(name);
+            analyticresult.setResults(response.toList());
+            analyticResulteRepository.save(analyticresult);
+
         }
 
         //return myresponse;
-
     }
 
     //Consume an Analytic Service
