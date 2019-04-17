@@ -21,6 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -316,7 +323,8 @@ public class GPController {
 
             //save the analytic result
             AnalyticResult analyticresult = new AnalyticResult();
-
+            analyticresult.setStatus("SUCCESS");
+            analyticresult.setExecutionMessage("The analytic service has succesfully completed.");
             analyticresult.setAnalyticServiceName(name);
             analyticresult.setResults(response.toList());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
@@ -328,22 +336,26 @@ public class GPController {
                 HttpHeaders callbackHeaders = new HttpHeaders();
                 callbackHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-                ObjectMapper mapper = new ObjectMapper();
-                //MultiValueMap<String, Object> map4 = new HashMap<String, Object>();
+                logger.info("analyticresult  " + gson.toJson(analyticresult));
+                logger.info("callback_url  " + callback_url);
 
-                // convert JSON string to Map
-                //map4 = mapper.readValue(gson.toJson(analyticresult), new TypeReference<Map<String, String>>() { });
+                //ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
+                String payload = gson.toJson(analyticresult);
+                StringEntity entity = new StringEntity(payload,
+                        ContentType.APPLICATION_JSON);
 
-                //MultiValueMap<String, String> map4 = new LinkedMultiValueMap<String, String>();
-                //map4.add("status", "SUCCESS");
-                //map4.add("executionMessage", "The analytic service has succesfully completed.");
-                //map4.add("analyticresult", "'" + Gson().analyticresult.toString() + "'");
-                //HttpEntity<MultiValueMap<String, String>> callback_request = new HttpEntity<>(map4, callbackHeaders);
+                HttpClient httpClient = HttpClientBuilder.create().build();
+                HttpPost request = new HttpPost(callback_url);
+                request.setEntity(entity);
 
-                ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
+                HttpResponse testresponse = httpClient.execute(request);
+                int statuscode = testresponse.getStatusLine().getStatusCode();
 
-                if (null != callback_response && null != callback_response.getStatusCode() && callback_response.getStatusCode().is2xxSuccessful()) {
-                    String callback_uuid = callback_response.getBody();
+                if (statuscode == 200) {
+                    org.apache.http.HttpEntity entity1 = testresponse.getEntity();
+                    // Read the contents of an entity and return it as a String.
+                    String content = EntityUtils.toString((org.apache.http.HttpEntity) entity1);
+                    String callback_uuid = content;
 
                     Optional<AnalyticResult> existing_as = analyticResulteRepository.findByCallbackid(callback_uuid);
                     if (existing_as.isPresent()) {
@@ -355,8 +367,11 @@ public class GPController {
                         analyticResulteRepository.save(savedanalyticresult);
                     }
 
+                } else {
+                    savedanalyticresult.setStatus("ERROR");
+                    savedanalyticresult.setExecutionMessage("callback url returned HTTP error " + statuscode);
+                    analyticResulteRepository.save(savedanalyticresult);
                 }
-
             }
 
         }
