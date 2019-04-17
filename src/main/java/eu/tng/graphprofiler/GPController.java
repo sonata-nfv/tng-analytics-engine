@@ -5,11 +5,16 @@
  */
 package eu.tng.graphprofiler;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import eu.tng.repository.dao.AnalyticResultRepository;
+import eu.tng.repository.dao.AnalyticServiceRepository;
+import eu.tng.repository.domain.AnalyticResult;
+import eu.tng.repository.domain.AnalyticService;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,16 +39,23 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 public class GPController {
-
+    
     @Autowired
     GPService graphProfilerService;
-
+    
+    @Autowired
+    private AnalyticServiceRepository analyticServiceRepository;
+    
+    @Autowired
+    private AnalyticResultRepository analyticResulteRepository;
+    
     @Value("${physiognomica.server.url}")
     String physiognomicaServerURL;
-
+    
     @Value("${prometheus.url}")
     String prometheusURL;
-
+    
+    private static final Logger logger = Logger.getLogger(GPController.class.getName());
     
     @RequestMapping("/")
     public String info() {
@@ -54,6 +67,84 @@ public class GPController {
         return "pong";
     }
 
+    //Fetch all dimensions for all metrics that contain a specific keyword
+    @RequestMapping(value = "/analytic_service/{callbackid}/status", method = RequestMethod.GET)
+    public String demoAnalyticsServiceCallback(@PathVariable("callbackid") String callbackid) {
+        String loginfo = "Analytic Service with id " + callbackid + " is completed";
+        logger.info(loginfo);
+        return callbackid;
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getAnalyticServiceList() {
+        analyticServiceRepository.deleteAll();
+
+        // save a couple of customers
+        AnalyticService as1 = new AnalyticService();
+        as1.setName("ChordDiagram");
+        as1.setUrl("/ocpu/library/Physiognomica/R/getChordDiagramFromPrometheusMetrics");
+        as1.setDescription("Provide a correlogram in the form of an interactive Chord diagram");
+        as1.setConstraints("Select the set of metrics (more than one) to be used for the calculation of the correlation matrix");
+        
+        List<String> results1 = new LinkedList<String>();
+        results1.add("correlation_page.html");
+        results1.add("correlation_matrix.csv");
+        results1.add("correlation_matrix.json");
+        results1.add("metrics_appendix.csv");
+        as1.setResults(results1);
+        analyticServiceRepository.save(as1);
+        
+        AnalyticService as2 = new AnalyticService();
+        as2.setName("TimeSeriesDecomposition");
+        as2.setUrl("/ocpu/library/Physiognomica/R/timeSeriesDecomposition");
+        as2.setDescription("Provide a decomposition of a time series in seasonal, trend, and remainder parts");
+        as2.setConstraints("Select one metric to be used for time series decomposition");
+        
+        List<String> results2 = new LinkedList<String>();
+        results2.add("time_series_decomposition.html");
+        results2.add("tm_series_decomposition.jpg");
+        as2.setResults(results2);
+        analyticServiceRepository.save(as1);
+        
+        analyticServiceRepository.save(as2);
+        
+        AnalyticService as3 = new AnalyticService();
+        as3.setName("LinearRegression");
+        as3.setUrl("/ocpu/library/Physiognomica/R/combinePrometheusMetrics");
+        as3.setDescription("Provide a linear regression model along with a scatterplot");
+        as3.setConstraints("Select the dependent and intenpendent variable for the linear regression model");
+        List<String> results3 = new LinkedList<String>();
+        results3.add("finaldata.csv");
+        results3.add("metricsCombination.html");
+        as3.setResults(results3);
+        analyticServiceRepository.save(as3);
+        
+        List<AnalyticService> analyticServicesList = analyticServiceRepository.findAll();
+        JSONArray asl = new JSONArray(analyticServicesList);
+        
+        return asl.toString();
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/results/list", method = RequestMethod.GET)
+    public String getAnalyticResultsList() {
+        
+        List<AnalyticResult> analyticResultList = analyticResulteRepository.findAll();
+        JSONArray arl = new JSONArray(analyticResultList);
+        
+        return arl.toString();
+    }
+
+    //Fetch all metrics available at prometheus
+    @RequestMapping(value = "/results/{callback_id}", method = RequestMethod.GET)
+    public String getAnalyticResultsList(@PathVariable("callback_id") String callback_id) {
+        
+        AnalyticResult analyticResult = analyticResulteRepository.findByCallbackid(callback_id);
+        logger.info(callback_id);
+        return new Gson().toJson(analyticResult);
+    }
+
     //Fetch all metrics available at prometheus
     @RequestMapping(value = "/metrics", method = RequestMethod.GET)
     public String getPrometheusMetrics() {
@@ -63,60 +154,59 @@ public class GPController {
     //Fetch metrics that contain a specific keyword
     @RequestMapping(value = "/metrics/{keyword}", method = RequestMethod.GET)
     public String getFilteredPrometheusMetrics(@PathVariable("keyword") String keyword) {
-
+        
         List<String> filteredData = graphProfilerService.getFilteredPrometheusMetrics(keyword);
-
+        
         JSONObject result = new JSONObject();
         result.put("status", "success");
         result.put("data", filteredData);
-
+        
         return result.toString();
-
+        
     }
 
     //Fetch all dimensions for a specific metrioc
     @RequestMapping(value = "/metric/{metric}/dimensions", method = RequestMethod.GET)
     public String getPrometheousMetricDimensions(@PathVariable("metric") String metric) {
-
+        
         List<String> filteredData = graphProfilerService.getPrometheousMetricDimensions(metric);
-
+        
         JSONObject result = new JSONObject();
         result.put("status", "success");
         result.put("data", filteredData);
-
+        
         return result.toString();
-
+        
     }
 
     //Fetch all dimensions for all metrics that contain a specific keyword
     @RequestMapping(value = "/metrics/{keyword}/dimensions", method = RequestMethod.GET)
     public String getFilteredPrometheusMetricswithAllDimensions(@PathVariable("keyword") String keyword) {
-
+        
         List<String> filteredData = graphProfilerService.getFilteredPrometheusMetricswithAllDimensions(keyword);
-
+        
         JSONObject result = new JSONObject();
         result.put("status", "success");
         result.put("data", filteredData);
-
+        
         return result.toString();
-
+        
     }
-    
+
     //Get all prometheus metrics for a specific nsr_id
     @RequestMapping(value = "/services/{nsr_id}/metrics", method = RequestMethod.GET)
     public String get5gtangoNetworkServiceMetrics(@PathVariable("nsr_id") String nsr_id) {
-
+        
         List<String> filteredData = graphProfilerService.get5gtangoNetworkServiceMetrics(nsr_id);
-
+        
         JSONObject result = new JSONObject();
         result.put("status", "success");
         result.put("data", filteredData);
-
+        
         return result.toString();
-
+        
     }
 
-    
     //Consume an Analytic Service (a.k.a execute a profiling process) for a specific nsr_id 
     //Request body JSONObject includes
     //start: start datetime
@@ -125,26 +215,44 @@ public class GPController {
     //name: name of the analytic service to consume
     //metrics: OPTIONAL set of metric names as they are available at prometheus. if is not selected a set of metrics then all metrics of the network service participate to the analysis
     //Example of prometheus query execution: http://212.101.173.101:9090/api/v1/query_range?query=cpu{resource_id=%27091db7f2-68b5-4487-b37c-27282b3381cf%27}&start=2019-02-28T10:10:30.781Z&end=2019-02-28T16:11:00.781Z&step=15s
-    @RequestMapping(value = "/analytic_service/{nsr_id}", method = RequestMethod.POST)
-    public String consumeAnalyticService(@PathVariable("nsr_id") String nsr_id, @RequestBody String analytic_service_info
+    @Async
+    @RequestMapping(value = "/analytic_service", method = RequestMethod.POST)
+    public void consumeAnalyticService(@RequestBody String analytic_service_info
     ) {
-
+        
         JSONObject analytic_service = new JSONObject(analytic_service_info);
         String start = analytic_service.getString("start");
         String end = analytic_service.getString("end");
         String step = analytic_service.getString("step");//"'3m'"
         String name = analytic_service.getString("name"); //"/ocpu/library/Physiognomica/R/getChordDiagram"
-        JSONArray metrics;
-        if (analytic_service.has("metrics")) {
-            metrics = analytic_service.getJSONArray("metrics");
-        } else {
-            List<String> metricslist = graphProfilerService.get5gtangoNetworkServiceMetrics(nsr_id);
-
-            metrics = new JSONArray(metricslist);
+        String vendor = analytic_service.getString("vendor");
+        String callback_url = analytic_service.getString("callback");
+        
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> callback_response = restTemplate.getForEntity(callback_url, String.class);
+        
+        String callback_uuid = callback_response.getBody();
+        AnalyticResult existing_as = analyticResulteRepository.findByCallbackid(callback_uuid);
+        if (!existing_as.equals(null)) {
+            logger.severe("duplicate callback_uuid. Analytic service is not executed");
+            return;
         }
         
-        System.out.println("metrics.toString()"+metrics.toString());
+        JSONArray metrics = null;
+        if (analytic_service.has("metrics")) {
+            metrics = analytic_service.getJSONArray("metrics");
+        } else if (vendor.equalsIgnoreCase("5gtango")) {
+            
+            if (analytic_service.has("nsr_id")) {
+                String nsr_id = analytic_service.getString("nsr_id");
+                List<String> metricslist = graphProfilerService.get5gtangoNetworkServiceMetrics(nsr_id);
+                metrics = new JSONArray(metricslist);
+            }
+            
+        }
+        //else {             return "undefined metrics parameter";        }
 
+        //System.out.println("metrics.toString()" + metrics.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
@@ -154,26 +262,66 @@ public class GPController {
         map3.add("start", "'" + start + "'");
         map3.add("end", "'" + end + "'");
         map3.add("enriched", "true");
-
+        
         HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
-
-        String analytic_service_url = physiognomicaServerURL + name;
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response3 = restTemplate
-                .postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
-
+        
+        AnalyticService as = analyticServiceRepository.findByName(name);
+        
+        String analytic_service_url = physiognomicaServerURL + as.getUrl();
+        System.out.println("analytic_service_url" + analytic_service_url);
+        
+        ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
+        
+        String myresponse = "";
         if (null != response3 && null != response3.getStatusCode() && response3
                 .getStatusCode()
                 .is2xxSuccessful()) {
-
-            System.out.println("response3" + response3.getBody());
+            
+            myresponse = response3.getBody();
+            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+            
+            String lines[] = myresponse.split("\\r?\\n");
+            JSONArray response = new JSONArray();
+            List<String> resultslist = as.getResults();
+            for (String line : lines) {
+                
+                if (resultslist.stream().anyMatch(s -> line.contains(s))) {
+                    if (line.contains("html")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "html");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("csv")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "csv");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("json")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "json");
+                        result.put("result", line);
+                        response.put(result);
+                    } else if (line.contains("jpg") || line.contains("png")) {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "img");
+                        result.put("result", line);
+                        response.put(result);
+                    }
+                }
+                
+            }
+            logger.info(response.toString());
+            
+            AnalyticResult analyticresult = new AnalyticResult();
+            analyticresult.setCallbackid(callback_uuid);
+            analyticresult.setAnalyticServiceName(name);
+            analyticresult.setResults(response.toList());
+            analyticResulteRepository.save(analyticresult);
+            
         }
 
-        return response3.getBody();
-
+        //return myresponse;
     }
-
 
     //Consume an Analytic Service
     //Request body JSONObject includes
@@ -220,7 +368,6 @@ public class GPController {
 //        return response3.getBody();
 //
 //    }
-
     // Can not work as black box for netdata but is still necessary as a generic aproach (maybe it will be used for sdk)
 //    @RequestMapping(value = "/metrics/{keyword}/dimensions/analytic_service", method = RequestMethod.POST)
 //    public String consumeAnalyticServiceWithFullSetOfMetricsBasedonAKeyword(@PathVariable("keyword") String keyword, @RequestBody String analytic_service_info
@@ -285,6 +432,4 @@ public class GPController {
 //        return result.toString();
 //
 //    }
-
-  
 }

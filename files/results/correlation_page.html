@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="lib/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="lib/d3-3.5.15/d3.min.js"></script>
+<script src="lib/d3-tip-0.6.7/index.js"></script>
+<link href="lib/chorddiag-0.0.0.9000/chorddiag.css" rel="stylesheet" />
+<script src="lib/chorddiag-0.0.0.9000/chorddiag.js"></script>
+<script src="lib/chorddiag-binding-0.1.2/chorddiag.js"></script>
+
+</head>
+<body style="background-color:white;">
+<html>
+  <body>
+    <div>
+      <h3 style="float:left;margin-left:300px;">Chord Diagramm with positive and statistical significant correlations</h3>
+      <h3 style="float:left;margin-left:300px;">
+        <div id="htmlwidget-7ae54af744098c0da566" style="width:960px;height:500px;" class="chorddiag html-widget"></div>
+        <script type="application/json" data-for="htmlwidget-7ae54af744098c0da566">{"x":{"matrix":[[0,0,0,0,0,0,0,65.7213499167865,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,63.4697389005861,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.8012940995082,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64.7901252858094,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66.523641786662,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66.982297995817,0,0,0,0,0,0,0,0,0,70.5493506229527,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72.5456964201569,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.3522690332818,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65.8913840484744,0,0,64.1072034089023,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.1223963418494],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63.3985515628966],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64.2431310105725,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63.1930886033166,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72.1390989096378,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63.423801932054],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.0482957187315],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"options":{"type":"directional","width":null,"height":null,"margin":30,"showGroupnames":true,"groupNames":["m_1","m_2","m_3","m_4","m_5","m_7","m_8","m_9","m_10","m_11","m_13","m_16","m_19","m_21","m_25","m_27","m_28","m_29","m_30","m_33","m_35","m_37","m_40","m_41","m_42","m_43","m_44","m_48","m_50","m_51","m_52","m_53","m_54","m_55","m_56","m_58","m_59","m_60","m_61","m_62","m_63","m_64","m_65","m_66","m_67","m_68","m_69","m_70","m_72","m_73","m_74","m_75","m_76","m_77","m_78","m_79","m_81","m_82"],"groupColors":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666"],"groupThickness":0.1,"groupPadding":0.0349065850398866,"groupnamePadding":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"groupnameFontsize":10,"groupedgeColor":null,"chordedgeColor":"#808080","categoryNames":null,"categorynamePadding":100,"categorynameFontsize":28,"showTicks":false,"tickInterval":1,"ticklabelFontsize":10,"fadeLevel":0.1,"showTooltips":true,"showZeroTooltips":false,"tooltipNames":["m_1","m_2","m_3","m_4","m_5","m_7","m_8","m_9","m_10","m_11","m_13","m_16","m_19","m_21","m_25","m_27","m_28","m_29","m_30","m_33","m_35","m_37","m_40","m_41","m_42","m_43","m_44","m_48","m_50","m_51","m_52","m_53","m_54","m_55","m_56","m_58","m_59","m_60","m_61","m_62","m_63","m_64","m_65","m_66","m_67","m_68","m_69","m_70","m_72","m_73","m_74","m_75","m_76","m_77","m_78","m_79","m_81","m_82"],"tooltipFontsize":12,"tooltipUnit":"","tooltipGroupConnector":" &#x25B6; ","precision":"null","clickAction":null,"clickGroupAction":null}},"evals":[],"jsHooks":[]}</script>
+      </h3>
+    </div>
+    <div>
+      <h3 style="float:left;margin-left:300px;">Chord Diagramm with negative and statistical significant correlation</h3>
+      <h3 style="float:left;margin-left:300px;">
+        <div id="htmlwidget-e70bce5fc5b2ec98e52a" style="width:960px;height:500px;" class="chorddiag html-widget"></div>
+        <script type="application/json" data-for="htmlwidget-e70bce5fc5b2ec98e52a">{"x":{"matrix":[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.2100989062033,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,67.189836369791,0,0,0,0,0,0,0,0,0,0,0,61.4891442395447,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,63.7093270612834,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.2789427019354,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,62.3208211805736,0,0,0,0,69.7631183756782,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64.116126084659,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61.6958149941661,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60.4550836168102,0,61.6051279980963,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65.8021287138943,0,0,0,0,61.5800681628041,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66.5205128459712,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61.1675082042778,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],"options":{"type":"directional","width":null,"height":null,"margin":30,"showGroupnames":true,"groupNames":["m_1","m_2","m_3","m_4","m_5","m_7","m_8","m_9","m_10","m_11","m_13","m_16","m_19","m_21","m_25","m_27","m_28","m_29","m_30","m_33","m_35","m_37","m_40","m_41","m_42","m_43","m_44","m_48","m_50","m_51","m_52","m_53","m_54","m_55","m_56","m_58","m_59","m_60","m_61","m_62","m_63","m_64","m_65","m_66","m_67","m_68","m_69","m_70","m_72","m_73","m_74","m_75","m_76","m_77","m_78","m_79","m_81","m_82"],"groupColors":["#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666"],"groupThickness":0.1,"groupPadding":0.0349065850398866,"groupnamePadding":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"groupnameFontsize":10,"groupedgeColor":null,"chordedgeColor":"#808080","categoryNames":null,"categorynamePadding":100,"categorynameFontsize":28,"showTicks":false,"tickInterval":1,"ticklabelFontsize":10,"fadeLevel":0.1,"showTooltips":true,"showZeroTooltips":false,"tooltipNames":["m_1","m_2","m_3","m_4","m_5","m_7","m_8","m_9","m_10","m_11","m_13","m_16","m_19","m_21","m_25","m_27","m_28","m_29","m_30","m_33","m_35","m_37","m_40","m_41","m_42","m_43","m_44","m_48","m_50","m_51","m_52","m_53","m_54","m_55","m_56","m_58","m_59","m_60","m_61","m_62","m_63","m_64","m_65","m_66","m_67","m_68","m_69","m_70","m_72","m_73","m_74","m_75","m_76","m_77","m_78","m_79","m_81","m_82"],"tooltipFontsize":12,"tooltipUnit":" %","tooltipGroupConnector":" &#x25B6; ","precision":4,"clickAction":"\n                                             //alert( JSON.stringify(d));  \n                                             //var lala = d.source.index; \n                                             //var url = new URL(document.location);\n                                             //var c = url.searchParams.get('c');\n                                             //alert(c);\n                                             //alert( 'http://212.101.173.35/getscatterplot/'+this.id+'/'+d.source.value);\n                                             \n                                             var data = null;\n                                             var xhr = new XMLHttpRequest();\n                                             xhr.addEventListener('readystatechange', function () {\n                                             if (this.readyState === 4) {\n                                             alert(this.responseText);\n                                             window.open( 'http://212.101.173.35/getscatterplot/'+this.id+'/'+d.source.value);\n                                             \n                                             }\n                                             });\n                                             xhr.open('POST', 'http://212.101.173.35/ocpu/library/Physiognomica/R/hello/');\n                                             xhr.send(data);\n                                             ","clickGroupAction":null}},"evals":[],"jsHooks":[]}</script>
+      </h3>
+    </div>
+    
+<table style="border-collapse:collapse;" class=table_9504 border=1>
+<thead>
+<tr>
+  <th id="tableHTML_header_1"> </th>
+  <th id="tableHTML_header_2">metric_number</th>
+  <th id="tableHTML_header_3">metric_name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td id="tableHTML_rownames">1</td>
+  <td id="tableHTML_column_1">m_1</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">2</td>
+  <td id="tableHTML_column_1">m_2</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_load_load_average{chart='system.load',dimension='load1',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.load',dimension='load1',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">3</td>
+  <td id="tableHTML_column_1">m_3</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_load_load_average{chart='system.load',dimension='load15',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.load',dimension='load15',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">4</td>
+  <td id="tableHTML_column_1">m_4</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_load_load_average{chart='system.load',dimension='load5',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.load',dimension='load5',family='load',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">5</td>
+  <td id="tableHTML_column_1">m_5</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='received',family='network',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ipv4',dimension='received',family='network',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">6</td>
+  <td id="tableHTML_column_1">m_6</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='sent',family='network',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ipv4',dimension='sent',family='network',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">7</td>
+  <td id="tableHTML_column_1">m_7</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_net_packets_packets_persec_average{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">8</td>
+  <td id="tableHTML_column_1">m_8</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">9</td>
+  <td id="tableHTML_column_1">m_9</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='LOC',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.interrupts',dimension='LOC',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">10</td>
+  <td id="tableHTML_column_1">m_10</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='MCP',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.interrupts',dimension='MCP',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">11</td>
+  <td id="tableHTML_column_1">m_11</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='virtio0-req.0_25',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.interrupts',dimension='virtio0-req.0_25',family='interrupts',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">12</td>
+  <td id="tableHTML_column_1">m_12</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_io_kilobytes_persec_average{chart='system.io',dimension='out',family='disk',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.io',dimension='out',family='disk',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">13</td>
+  <td id="tableHTML_column_1">m_13</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_cpu_percentage_average{chart='system.cpu',dimension='idle',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.cpu',dimension='idle',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">14</td>
+  <td id="tableHTML_column_1">m_14</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_cpu_percentage_average{chart='system.cpu',dimension='system',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.cpu',dimension='system',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">15</td>
+  <td id="tableHTML_column_1">m_15</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_cpu_percentage_average{chart='system.cpu',dimension='user',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.cpu',dimension='user',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">16</td>
+  <td id="tableHTML_column_1">m_16</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ram_MB_average{chart='system.ram',dimension='buffers',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ram',dimension='buffers',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">17</td>
+  <td id="tableHTML_column_1">m_17</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ram_MB_average{chart='system.ram',dimension='cached',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ram',dimension='cached',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">18</td>
+  <td id="tableHTML_column_1">m_18</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ram_MB_average{chart='system.ram',dimension='free',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ram',dimension='free',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">19</td>
+  <td id="tableHTML_column_1">m_19</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_ram_MB_average{chart='system.ram',dimension='used',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='system.ram',dimension='used',family='ram',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">20</td>
+  <td id="tableHTML_column_1">m_20</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_mem_available_MB_average{chart='mem.available',dimension='avail',family='system',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='mem.available',dimension='avail',family='system',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">21</td>
+  <td id="tableHTML_column_1">m_21</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_groups_cpu_cpu_time___average{chart='groups.cpu',dimension='admin',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}{chart='groups.cpu',dimension='admin',family='cpu',instance='[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">22</td>
+  <td id="tableHTML_column_1">m_22</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ram_MB_average{chart='system.ram',dimension='buffers',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ram',dimension='buffers',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">23</td>
+  <td id="tableHTML_column_1">m_23</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ram_MB_average{chart='system.ram',dimension='cached',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ram',dimension='cached',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">24</td>
+  <td id="tableHTML_column_1">m_24</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ram_MB_average{chart='system.ram',dimension='free',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ram',dimension='free',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">25</td>
+  <td id="tableHTML_column_1">m_25</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ram_MB_average{chart='system.ram',dimension='used',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ram',dimension='used',family='ram',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">26</td>
+  <td id="tableHTML_column_1">m_26</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_mem_available_MB_average{chart='mem.available',dimension='avail',family='system',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='mem.available',dimension='avail',family='system',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">27</td>
+  <td id="tableHTML_column_1">m_27</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_load_load_average{chart='system.load',dimension='load1',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.load',dimension='load1',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">28</td>
+  <td id="tableHTML_column_1">m_28</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_load_load_average{chart='system.load',dimension='load15',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.load',dimension='load15',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">29</td>
+  <td id="tableHTML_column_1">m_29</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_load_load_average{chart='system.load',dimension='load5',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.load',dimension='load5',family='load',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">30</td>
+  <td id="tableHTML_column_1">m_30</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='received',family='network',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ipv4',dimension='received',family='network',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">31</td>
+  <td id="tableHTML_column_1">m_31</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='sent',family='network',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.ipv4',dimension='sent',family='network',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">32</td>
+  <td id="tableHTML_column_1">m_32</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_net_packets_packets_persec_average{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">33</td>
+  <td id="tableHTML_column_1">m_33</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_net_packets_packets_persec_average{chart='net_packets.ens3',dimension='received',family='ens3',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='net_packets.ens3',dimension='received',family='ens3',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">34</td>
+  <td id="tableHTML_column_1">m_34</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_net_packets_packets_persec_average{chart='net_packets.ens3',dimension='sent',family='ens3',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='net_packets.ens3',dimension='sent',family='ens3',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">35</td>
+  <td id="tableHTML_column_1">m_35</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_net_packets_packets_persec_average{chart='net_packets.tun0',dimension='received',family='tun0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='net_packets.tun0',dimension='received',family='tun0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">36</td>
+  <td id="tableHTML_column_1">m_36</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_net_packets_packets_persec_average{chart='net_packets.tun0',dimension='sent',family='tun0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='net_packets.tun0',dimension='sent',family='tun0',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">37</td>
+  <td id="tableHTML_column_1">m_37</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">38</td>
+  <td id="tableHTML_column_1">m_38</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='MCP',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.interrupts',dimension='MCP',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">39</td>
+  <td id="tableHTML_column_1">m_39</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='ens3_11',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.interrupts',dimension='ens3_11',family='interrupts',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">40</td>
+  <td id="tableHTML_column_1">m_40</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_io_kilobytes_persec_average{chart='system.io',dimension='out',family='disk',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.io',dimension='out',family='disk',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">41</td>
+  <td id="tableHTML_column_1">m_41</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_cpu_percentage_average{chart='system.cpu',dimension='user',family='cpu',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.cpu',dimension='user',family='cpu',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">42</td>
+  <td id="tableHTML_column_1">m_42</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:wayudmKBYS_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fce0:de07:d427:9ec9:12a7:9668:8726:38a9]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">43</td>
+  <td id="tableHTML_column_1">m_43</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_groups_cpu_cpu_time___average{chart='groups.cpu',dimension='nogroup',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='groups.cpu',dimension='nogroup',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">44</td>
+  <td id="tableHTML_column_1">m_44</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_groups_cpu_cpu_time___average{chart='groups.cpu',dimension='root',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='groups.cpu',dimension='root',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">45</td>
+  <td id="tableHTML_column_1">m_45</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ram_MB_average{chart='system.ram',dimension='buffers',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ram',dimension='buffers',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">46</td>
+  <td id="tableHTML_column_1">m_46</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ram_MB_average{chart='system.ram',dimension='cached',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ram',dimension='cached',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">47</td>
+  <td id="tableHTML_column_1">m_47</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ram_MB_average{chart='system.ram',dimension='free',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ram',dimension='free',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">48</td>
+  <td id="tableHTML_column_1">m_48</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ram_MB_average{chart='system.ram',dimension='used',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ram',dimension='used',family='ram',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">49</td>
+  <td id="tableHTML_column_1">m_49</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_mem_available_MB_average{chart='mem.available',dimension='avail',family='system',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='mem.available',dimension='avail',family='system',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">50</td>
+  <td id="tableHTML_column_1">m_50</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_cpu_percentage_average{chart='system.cpu',dimension='steal',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.cpu',dimension='steal',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">51</td>
+  <td id="tableHTML_column_1">m_51</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_cpu_percentage_average{chart='system.cpu',dimension='system',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.cpu',dimension='system',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">52</td>
+  <td id="tableHTML_column_1">m_52</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_cpu_percentage_average{chart='system.cpu',dimension='user',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.cpu',dimension='user',family='cpu',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">53</td>
+  <td id="tableHTML_column_1">m_53</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_load_load_average{chart='system.load',dimension='load1',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.load',dimension='load1',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">54</td>
+  <td id="tableHTML_column_1">m_54</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_load_load_average{chart='system.load',dimension='load15',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.load',dimension='load15',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">55</td>
+  <td id="tableHTML_column_1">m_55</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_load_load_average{chart='system.load',dimension='load5',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.load',dimension='load5',family='load',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">56</td>
+  <td id="tableHTML_column_1">m_56</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='received',family='network',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ipv4',dimension='received',family='network',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">57</td>
+  <td id="tableHTML_column_1">m_57</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='sent',family='network',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.ipv4',dimension='sent',family='network',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">58</td>
+  <td id="tableHTML_column_1">m_58</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_net_packets_packets_persec_average{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='net_packets.docker0',dimension='received',family='docker0',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">59</td>
+  <td id="tableHTML_column_1">m_59</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_net_packets_packets_persec_average{chart='net_packets.ens3',dimension='sent',family='ens3',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='net_packets.ens3',dimension='sent',family='ens3',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">60</td>
+  <td id="tableHTML_column_1">m_60</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_net_packets_packets_persec_average{chart='net_packets.tun0',dimension='received',family='tun0',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='net_packets.tun0',dimension='received',family='tun0',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">61</td>
+  <td id="tableHTML_column_1">m_61</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:J9emWzWSbq_system_io_kilobytes_persec_average{chart='system.io',dimension='out',family='disk',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}{chart='system.io',dimension='out',family='disk',instance='[fc97:3759:ced:3b1a:209e:36d9:515a:22e2]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">62</td>
+  <td id="tableHTML_column_1">m_62</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='RCU',family='softirqs',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.softirqs',dimension='RCU',family='softirqs',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">63</td>
+  <td id="tableHTML_column_1">m_63</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='RCU',family='softirqs',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.softirqs',dimension='RCU',family='softirqs',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">64</td>
+  <td id="tableHTML_column_1">m_64</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">65</td>
+  <td id="tableHTML_column_1">m_65</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_softirqs_softirqs_persec_average{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.softirqs',dimension='TIMER',family='softirqs',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">66</td>
+  <td id="tableHTML_column_1">m_66</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_load_load_average{chart='system.load',dimension='load1',family='load',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.load',dimension='load1',family='load',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">67</td>
+  <td id="tableHTML_column_1">m_67</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_load_load_average{chart='system.load',dimension='load15',family='load',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.load',dimension='load15',family='load',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">68</td>
+  <td id="tableHTML_column_1">m_68</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_load_load_average{chart='system.load',dimension='load5',family='load',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.load',dimension='load5',family='load',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">69</td>
+  <td id="tableHTML_column_1">m_69</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_load_load_average{chart='system.load',dimension='load5',family='load',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.load',dimension='load5',family='load',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">70</td>
+  <td id="tableHTML_column_1">m_70</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='received',family='network',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.ipv4',dimension='received',family='network',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">71</td>
+  <td id="tableHTML_column_1">m_71</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='sent',family='network',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.ipv4',dimension='sent',family='network',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">72</td>
+  <td id="tableHTML_column_1">m_72</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ipv4_kilobits_persec_average{chart='system.ipv4',dimension='sent',family='network',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.ipv4',dimension='sent',family='network',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">73</td>
+  <td id="tableHTML_column_1">m_73</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.interrupts',dimension='CAL',family='interrupts',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">74</td>
+  <td id="tableHTML_column_1">m_74</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_interrupts_interrupts_persec_average{chart='system.interrupts',dimension='virtio1_10',family='interrupts',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.interrupts',dimension='virtio1_10',family='interrupts',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">75</td>
+  <td id="tableHTML_column_1">m_75</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_io_kilobytes_persec_average{chart='system.io',dimension='out',family='disk',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.io',dimension='out',family='disk',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">76</td>
+  <td id="tableHTML_column_1">m_76</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_io_kilobytes_persec_average{chart='system.io',dimension='out',family='disk',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.io',dimension='out',family='disk',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">77</td>
+  <td id="tableHTML_column_1">m_77</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_cpu_percentage_average{chart='system.cpu',dimension='idle',family='cpu',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.cpu',dimension='idle',family='cpu',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">78</td>
+  <td id="tableHTML_column_1">m_78</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_cpu_percentage_average{chart='system.cpu',dimension='system',family='cpu',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.cpu',dimension='system',family='cpu',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">79</td>
+  <td id="tableHTML_column_1">m_79</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_cpu_percentage_average{chart='system.cpu',dimension='user',family='cpu',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.cpu',dimension='user',family='cpu',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">80</td>
+  <td id="tableHTML_column_1">m_80</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ram_MB_average{chart='system.ram',dimension='buffers',family='ram',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.ram',dimension='buffers',family='ram',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">81</td>
+  <td id="tableHTML_column_1">m_81</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ram_MB_average{chart='system.ram',dimension='used',family='ram',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='system.ram',dimension='used',family='ram',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">82</td>
+  <td id="tableHTML_column_1">m_82</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_system_ram_MB_average{chart='system.ram',dimension='used',family='ram',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='system.ram',dimension='used',family='ram',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">83</td>
+  <td id="tableHTML_column_1">m_83</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_mem_available_MB_average{chart='mem.available',dimension='avail',family='system',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}{chart='mem.available',dimension='avail',family='system',instance='[fc03:39a5:54f1:e6ea:6e3a:f4dc:cbf9:2f30]:19999',job='netdata'}</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">84</td>
+  <td id="tableHTML_column_1">m_84</td>
+  <td id="tableHTML_column_2">netdata:jmSRafpAkY:Gi2E9NYbxy:XtXaJ9efKJ_mem_available_MB_average{chart='mem.available',dimension='avail',family='system',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}{chart='mem.available',dimension='avail',family='system',instance='[fc8f:366a:994a:2d14:9d16:4655:b04a:33d3]:19999',job='netdata'}</td>
+</tr>
+</tbody>
+</table>
+  </body>
+</html>
+</body>
+</html>
