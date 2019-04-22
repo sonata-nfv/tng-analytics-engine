@@ -5,6 +5,7 @@
  */
 package eu.tng.repository.domain;
 
+import java.util.Date;
 import java.util.List;
 import org.json.JSONArray;
 import org.springframework.data.annotation.Id;
@@ -21,15 +22,21 @@ public class AnalyticResult {
     private String id;
 
     private String callbackid;
-    
+
     private String analyticServiceName;
 
     private List results;
+
+    //SUCCESS or ERROR
+    private String status;
+
+    private String executionMessage;
     
+    private Date executionDate;
 
     public AnalyticResult() {
     }
-    
+
     public String getId() {
         return id;
     }
@@ -62,5 +69,28 @@ public class AnalyticResult {
         this.results = results;
     }
 
-   
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getExecutionMessage() {
+        return executionMessage;
+    }
+
+    public void setExecutionMessage(String executionMessage) {
+        this.executionMessage = executionMessage;
+    }
+
+    public Date getExecutionDate() {
+        return executionDate;
+    }
+
+    public void setExecutionDate(Date executionDate) {
+        this.executionDate = executionDate;
+    }
+
 }

@@ -5,32 +5,53 @@
  */
 package eu.tng.graphprofiler;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import eu.tng.api.exception.CustomNotFoundException;
 import eu.tng.repository.dao.AnalyticResultRepository;
 import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticResult;
 import eu.tng.repository.domain.AnalyticService;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -56,28 +77,37 @@ public class GPController {
     String prometheusURL;
     
     private static final Logger logger = Logger.getLogger(GPController.class.getName());
-    
+
+    //profiler pageland
     @RequestMapping("/")
     public String info() {
         return "Welcome to tng-profiler!";
     }
-    
+
+    //helthcheck call
     @RequestMapping("/ping")
     public String ping() {
         return "pong";
     }
 
-    //Fetch all dimensions for all metrics that contain a specific keyword
-    @RequestMapping(value = "/analytic_service/{callbackid}/status", method = RequestMethod.GET)
-    public String demoAnalyticsServiceCallback(@PathVariable("callbackid") String callbackid) {
+    //demo callback api for testing
+    @RequestMapping(value = "/analytic_service/{callbackid}/status", method = RequestMethod.POST)
+    public String demoAnalyticsServiceCallback(@PathVariable("callbackid") String callbackid, @RequestBody String analytic_service_info) {
         String loginfo = "Analytic Service with id " + callbackid + " is completed";
         logger.info(loginfo);
+        logger.info("--------------------");
+        logger.info(analytic_service_info);
         return callbackid;
     }
 
-    //Fetch all metrics available at prometheus
+    //Fetch all available analytic services
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getAnalyticServiceList() {
+        
+//        if (true) {
+//            throw new CustomNotFoundException("Not found customer with name is ");
+//        }
+        
         analyticServiceRepository.deleteAll();
 
         // save a couple of customers
@@ -126,7 +156,7 @@ public class GPController {
         return asl.toString();
     }
 
-    //Fetch all metrics available at prometheus
+    //Fetch the whole list of the analytic results
     @RequestMapping(value = "/results/list", method = RequestMethod.GET)
     public String getAnalyticResultsList() {
         
@@ -136,13 +166,13 @@ public class GPController {
         return arl.toString();
     }
 
-    //Fetch all metrics available at prometheus
+    //Fetch one analytic result
     @RequestMapping(value = "/results/{callback_id}", method = RequestMethod.GET)
-    public String getAnalyticResultsList(@PathVariable("callback_id") String callback_id) {
+    public String getAnalyticResults(@PathVariable("callback_id") String callback_id) {
         
-        AnalyticResult analyticResult = analyticResulteRepository.findByCallbackid(callback_id);
+        Optional<AnalyticResult> analyticResult = analyticResulteRepository.findByCallbackid(callback_id);
         logger.info(callback_id);
-        return new Gson().toJson(analyticResult);
+        return new Gson().toJson(analyticResult.get());
     }
 
     //Fetch all metrics available at prometheus
@@ -215,112 +245,23 @@ public class GPController {
     //name: name of the analytic service to consume
     //metrics: OPTIONAL set of metric names as they are available at prometheus. if is not selected a set of metrics then all metrics of the network service participate to the analysis
     //Example of prometheus query execution: http://212.101.173.101:9090/api/v1/query_range?query=cpu{resource_id=%27091db7f2-68b5-4487-b37c-27282b3381cf%27}&start=2019-02-28T10:10:30.781Z&end=2019-02-28T16:11:00.781Z&step=15s
-    @Async
     @RequestMapping(value = "/analytic_service", method = RequestMethod.POST)
     public void consumeAnalyticService(@RequestBody String analytic_service_info
-    ) {
-        
-        JSONObject analytic_service = new JSONObject(analytic_service_info);
-        String start = analytic_service.getString("start");
-        String end = analytic_service.getString("end");
-        String step = analytic_service.getString("step");//"'3m'"
-        String name = analytic_service.getString("name"); //"/ocpu/library/Physiognomica/R/getChordDiagram"
-        String vendor = analytic_service.getString("vendor");
-        String callback_url = analytic_service.getString("callback");
-        
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> callback_response = restTemplate.getForEntity(callback_url, String.class);
-        
-        String callback_uuid = callback_response.getBody();
-        AnalyticResult existing_as = analyticResulteRepository.findByCallbackid(callback_uuid);
-        if (!existing_as.equals(null)) {
-            logger.severe("duplicate callback_uuid. Analytic service is not executed");
-            return;
-        }
-        
-        JSONArray metrics = null;
-        if (analytic_service.has("metrics")) {
-            metrics = analytic_service.getJSONArray("metrics");
-        } else if (vendor.equalsIgnoreCase("5gtango")) {
-            
-            if (analytic_service.has("nsr_id")) {
-                String nsr_id = analytic_service.getString("nsr_id");
-                List<String> metricslist = graphProfilerService.get5gtangoNetworkServiceMetrics(nsr_id);
-                metrics = new JSONArray(metricslist);
-            }
-            
-        }
-        //else {             return "undefined metrics parameter";        }
+    ) throws IOException {
+        graphProfilerService.consumeAnalyticService(analytic_service_info);
+    }
+    
+   
 
-        //System.out.println("metrics.toString()" + metrics.toString());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
-        map3.add("prometheus_url", "'" + prometheusURL + "'");
-        map3.add("metrics", metrics.toString());
-        map3.add("step", "'" + step + "'");
-        map3.add("start", "'" + start + "'");
-        map3.add("end", "'" + end + "'");
-        map3.add("enriched", "true");
-        
-        HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
-        
-        AnalyticService as = analyticServiceRepository.findByName(name);
-        
-        String analytic_service_url = physiognomicaServerURL + as.getUrl();
-        System.out.println("analytic_service_url" + analytic_service_url);
-        
-        ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
-        
-        String myresponse = "";
-        if (null != response3 && null != response3.getStatusCode() && response3
-                .getStatusCode()
-                .is2xxSuccessful()) {
-            
-            myresponse = response3.getBody();
-            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
-            
-            String lines[] = myresponse.split("\\r?\\n");
-            JSONArray response = new JSONArray();
-            List<String> resultslist = as.getResults();
-            for (String line : lines) {
-                
-                if (resultslist.stream().anyMatch(s -> line.contains(s))) {
-                    if (line.contains("html")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "html");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("csv")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "csv");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("json")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "json");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("jpg") || line.contains("png")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "img");
-                        result.put("result", line);
-                        response.put(result);
-                    }
-                }
-                
-            }
-            logger.info(response.toString());
-            
-            AnalyticResult analyticresult = new AnalyticResult();
-            analyticresult.setCallbackid(callback_uuid);
-            analyticresult.setAnalyticServiceName(name);
-            analyticresult.setResults(response.toList());
-            analyticResulteRepository.save(analyticresult);
-            
+    /*
+    if (true) {
+            throw new CustomNotFoundException("Not found customer with name is ");
         }
-
-        //return myresponse;
+     */
+    @ExceptionHandler(CustomNotFoundException.class)
+    public String handleError(CustomNotFoundException e) {
+        
+        return "adfadfadfadfasdfadsf " + e.getMessage();
     }
 
     //Consume an Analytic Service
