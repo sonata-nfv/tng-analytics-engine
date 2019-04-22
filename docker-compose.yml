@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    container_name: mongo
+    restart: always
+  profiler:
+    build:
+     context: .
+     dockerfile: Dockerfile
+    container_name: profiler 
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo
+    restart: always
+  analyticserver:
+    build:
+     context: .
+     dockerfile: analyticserver/Dockerfile
+    container_name: analyticserver
+    ports:
+      - 80:80
+    restart: always
+

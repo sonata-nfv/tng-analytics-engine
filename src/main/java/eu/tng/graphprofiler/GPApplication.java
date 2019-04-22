@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication
 @EnableAsync
 @EnableMongoRepositories("eu.tng.repository.dao")
-@ComponentScan({"eu.tng"})
 public class GPApplication {
 
     public static void main(String[] args) {

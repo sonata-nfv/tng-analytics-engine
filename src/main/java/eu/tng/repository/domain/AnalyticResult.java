@@ -5,6 +5,7 @@
  */
 package eu.tng.repository.domain;
 
+import java.util.Date;
 import java.util.List;
 import org.json.JSONArray;
 import org.springframework.data.annotation.Id;
@@ -30,6 +31,8 @@ public class AnalyticResult {
     private String status;
 
     private String executionMessage;
+    
+    private Date executionDate;
 
     public AnalyticResult() {
     }
@@ -80,6 +83,14 @@ public class AnalyticResult {
 
     public void setExecutionMessage(String executionMessage) {
         this.executionMessage = executionMessage;
+    }
+
+    public Date getExecutionDate() {
+        return executionDate;
+    }
+
+    public void setExecutionDate(Date executionDate) {
+        this.executionDate = executionDate;
     }
 
 }
