@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>eu.tng</groupId>
-    <artifactId>tng-profiler</artifactId>
+    <artifactId>tng-analytics-engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tng-graph-profiler</name>
     <description>Demo project for Spring Boot</description>

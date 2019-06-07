@@ -185,8 +185,48 @@ public class GPService {
         return metricswithAllDimensions;
 
     }
+    
+    
+        public List<String> get5gtangoVnVNetworkServiceMetrics(String nsr_id) {
+        List<String> metricswithDimensions = new ArrayList();
 
-    public List<String> get5gtangoNetworkServiceMetrics(String nsr_id) {
+        String monitoringEngineURL = monitoringEngine + "/api/v2/services/" + nsr_id + "/metrics";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(monitoringEngineURL, HttpMethod.GET, entity, String.class);
+
+        JSONObject myresponse = new JSONObject(response.getBody());
+
+        JSONArray vnfs = myresponse.getJSONArray("vnfs");
+
+        for (int i = 0; i < vnfs.length(); i++) {
+            JSONObject vnf = vnfs.getJSONObject(i);
+            JSONArray vdus = vnf.getJSONArray("vdus");
+            for (int k = 0; k < vdus.length(); k++) {
+                JSONObject vdu = vdus.getJSONObject(k);
+
+                JSONArray metrics = vdu.getJSONArray("metrics");
+
+                for (int n = 0; n < metrics.length(); n++) {
+                    JSONObject metric = metrics.getJSONObject(n);
+
+                    String metricwithDimensions = metric.getString("__name__") + "{"
+                            + "name='" + (metric.has("name") ? metric.getString("name") : "") + "'}";
+
+                    metricswithDimensions.add(metricwithDimensions);
+                }
+
+            }
+        }
+
+        return metricswithDimensions;
+    }
+    
+
+    public List<String> get5gtangoSPNetworkServiceMetrics(String nsr_id) {
         List<String> metricswithDimensions = new ArrayList();
 
         String monitoringEngineURL = monitoringEngine + "/api/v2/services/" + nsr_id + "/metrics";
@@ -229,10 +269,9 @@ public class GPService {
     public void consumeAnalyticService(String analytic_service_info) throws IOException {
         Gson gson = new Gson();
         JSONObject analytic_service = new JSONObject(analytic_service_info);
-        String start = analytic_service.getString("start");
-        String end = analytic_service.getString("end");
+        JSONArray periods = analytic_service.getJSONArray("periods");
         String step = analytic_service.getString("step");//"'3m'"
-        String name = analytic_service.getString("name"); //"/ocpu/library/Physiognomica/R/getChordDiagram"
+        String name = analytic_service.getString("name"); 
         String vendor = analytic_service.getString("vendor");
 
         RestTemplate restTemplate = new RestTemplate();
@@ -240,12 +279,14 @@ public class GPService {
         JSONArray metrics = null;
         if (analytic_service.has("metrics")) {
             metrics = analytic_service.getJSONArray("metrics");
-        } else if (vendor.equalsIgnoreCase("5gtango")) {
+            System.out.println("metrics--> "+metrics);
+        } else if (vendor.equalsIgnoreCase("5gtango.vnv")) {
 
             if (analytic_service.has("nsr_id")) {
                 String nsr_id = analytic_service.getString("nsr_id");
-                List<String> metricslist = this.get5gtangoNetworkServiceMetrics(nsr_id);
+                List<String> metricslist = this.get5gtangoVnVNetworkServiceMetrics(nsr_id);
                 metrics = new JSONArray(metricslist);
+                System.out.println("metrics--> "+metrics);
             }
 
         }
@@ -257,8 +298,7 @@ public class GPService {
         map3.add("prometheus_url", "'" + prometheusURL + "'");
         map3.add("metrics", metrics.toString());
         map3.add("step", "'" + step + "'");
-        map3.add("start", "'" + start + "'");
-        map3.add("end", "'" + end + "'");
+        map3.add("periods", periods.toString());
         map3.add("enriched", "true");
 
         HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
@@ -302,6 +342,11 @@ public class GPService {
                     } else if (line.contains("jpg") || line.contains("png")) {
                         JSONObject result = new JSONObject();
                         result.put("type", "img");
+                        result.put("result", line);
+                        response.put(result);
+                    } else {
+                        JSONObject result = new JSONObject();
+                        result.put("type", "txt");
                         result.put("result", line);
                         response.put(result);
                     }
