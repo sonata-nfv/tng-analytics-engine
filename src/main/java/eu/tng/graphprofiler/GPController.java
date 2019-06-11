@@ -43,8 +43,8 @@ public class GPController {
     @Autowired
     private AnalyticResultRepository analyticResulteRepository;
     
-    @Value("${physiognomica.server.url}")
-    String physiognomicaServerURL;
+    //@Value("${physiognomica.server.url}")
+    //String physiognomicaServerURL;
     
     @Value("${prometheus.url}")
     String prometheusURL;

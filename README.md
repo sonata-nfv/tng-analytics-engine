@@ -26,3 +26,26 @@ The following lead developers are responsible for this repository and have admin
 ### Feedback-Chanel
 
 * Please use the GitHub issues to report bugs.
+
+
+
+
+
+
+
+
+// run analytics engine as containers
+//make sure select ENV MONGO_DB localhost at tng-analytics-engine dockerfile
+sudo docker build --no-cache -t tng-analytics-engine  .
+docker run  --name son-mongo --net host mongo
+docker run --name tng-analytics-engine  --net host tng-analytics-engine  
+docker run --name analyticserver --net host analyticserver
+
+
+//run analytics engine via docker compose 
+mvn -DPHYSIOG_URL='http://analyticserver' -DPROMETHEUS_URL='http://pre-int-vnv-bcn.5gtango.eu:9090' -DMONITORING_ENGINE='http://pre-int-vnv-bcn.5gtango.eu:8000' clean install
+
+docker-compose build --no-cache tng-analytics-engine 
+docker-compose up
+
+

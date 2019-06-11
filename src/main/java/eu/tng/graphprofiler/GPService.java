@@ -57,13 +57,13 @@ import org.springframework.web.client.RestTemplate;
 public class GPService {
 
     @Value("${physiognomica.server.url}")
-    String physiognomicaServerURL;
+    private String physiognomicaServerURL;
 
     @Value("${prometheus.url}")
-    String prometheusURL;
+    private String prometheusURL;
 
     @Value("${monitoring.engine}")
-    String monitoringEngine;
+    private String monitoringEngine;
 
     private static final Logger logger = Logger.getLogger(GPController.class.getName());
 
@@ -191,6 +191,7 @@ public class GPService {
         List<String> metricswithDimensions = new ArrayList();
 
         String monitoringEngineURL = monitoringEngine + "/api/v2/services/" + nsr_id + "/metrics";
+        logger.info("monitoringEngineURL---- "+monitoringEngineURL);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
