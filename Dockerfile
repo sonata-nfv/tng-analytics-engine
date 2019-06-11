@@ -7,7 +7,7 @@ RUN cd /app
 RUN mvn clean install
 
 FROM openjdk
-EXPOSE 8082
+EXPOSE 8085
 COPY --from=0  /app/target/tng-analytics-engine-0.0.1-SNAPSHOT.jar /app/tng-analytics-engine-0.0.1-SNAPSHOT.jar
 WORKDIR /app
 
