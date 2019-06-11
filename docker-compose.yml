@@ -1,20 +1,21 @@
 version: '3'
 services:
-  mongo:
+  son-mongo:
     image: mongo
+    container_name: son-mongo
     ports:
-      - 27017:27017
-    container_name: mongo
+        - 27017:27017
     restart: always
-  profiler:
+  tng-analytics-engine:
     build:
      context: .
      dockerfile: Dockerfile
-    container_name: profiler 
+    container_name:  tng-analytics-engine 
     ports:
       - "8082:8082"
     depends_on:
-      - mongo
+      - son-mongo
+      - analyticserver
     restart: always
   analyticserver:
     build:
@@ -22,6 +23,6 @@ services:
      dockerfile: analyticserver/Dockerfile
     container_name: analyticserver
     ports:
-      - 80:80
+      - "80:80"
     restart: always
 
