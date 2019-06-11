@@ -23,6 +23,6 @@ services:
      dockerfile: analyticserver/Dockerfile
     container_name: analyticserver
     ports:
-      - "80:80"
+      - "8083:80"
     restart: always
 
