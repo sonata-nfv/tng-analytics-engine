@@ -1,9 +1,15 @@
-FROM openjdk
+FROM maven
 
-WORKDIR /tng-analytics-engine
-RUN cd /tng-analytics-engine
-EXPOSE 8082
-COPY /target/tng-analytics-engine-0.0.1-SNAPSHOT.jar  .
+WORKDIR /app
+ADD . /app
+RUN cd /app
+
+RUN mvn clean install
+
+FROM openjdk
+EXPOSE 8085
+COPY --from=0  /app/target/tng-analytics-engine-0.0.1-SNAPSHOT.jar /app/tng-analytics-engine-0.0.1-SNAPSHOT.jar
+WORKDIR /app
 
 #ENV MONGO_DB localhost
 #ENV PHYSIOG_URL localhost
