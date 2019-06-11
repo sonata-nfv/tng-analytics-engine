@@ -292,6 +292,7 @@ public class GPService {
 
         }
 
+        logger.info("connect to prometheusURL"+prometheusURL);
         //System.out.println("metrics.toString()" + metrics.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

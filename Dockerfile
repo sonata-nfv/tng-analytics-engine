@@ -19,8 +19,8 @@ ENV PHYSIOG_URL http://analyticserver
 
 
 
-ENV MONITORING_ENGINE http://son-vnv-monitor-manager
-ENV PROMETHEUS_URL http://son-monitor-prometheus
+ENV MONITORING_ENGINE http://son-vnv-monitor-manager:8000
+ENV PROMETHEUS_URL http://son-monitor-prometheus:9090
 
 
 #ENV MONITORING_ENGINE http://pre-int-vnv-bcn.5gtango.eu:8000
