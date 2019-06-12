@@ -15,13 +15,13 @@ services:
       - "8085:8085"
     depends_on:
       - son-mongo
-      - analyticserver
+      - tng-analytics-rserver
     restart: always
-  analyticserver:
+  tng-analytics-rserver:
     build:
      context: .
-     dockerfile: analyticserver/Dockerfile
-    container_name: analyticserver
+     dockerfile: tng-analytics-rserver/Dockerfile
+    container_name: tng-analytics-rserver
     ports:
       - "8083:80"
     restart: always
