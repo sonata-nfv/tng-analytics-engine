@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('Container Build') {
+    stage('Container Build analytics') {
       parallel {
         stage('Container Build') {
           steps {
@@ -13,9 +13,9 @@ pipeline {
             sh 'docker build -t registry.sonata-nfv.eu:5000/tng-analytics-engine .'
           }
         }
-        stage('Building analyticserver') {
+        stage('Building tng-analytics-rserver') {
           steps {
-            sh 'docker build -t registry.sonata-nfv.eu:5000/analyticserver -f analyticserver/Dockerfile analyticserver/'
+            sh 'docker build -t registry.sonata-nfv.eu:5000/tng-analytics-rserver -f tng-analytics-rserver/Dockerfile tng-analytics-rserver/'
           }
         }
       }
@@ -32,9 +32,9 @@ pipeline {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine'
           }
         }
-        stage('Publishing analyticserver') {
+        stage('Publishing tng-analytics-rserver') {
           steps {
-            sh 'docker push registry.sonata-nfv.eu:5000/analyticserver'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver'
           }
         }
       }
@@ -73,10 +73,10 @@ pipeline {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:int'
           }
         }
-        stage('analyticserver') {
+        stage('tng-analytics-rserver') {
           steps {
-            sh 'docker tag registry.sonata-nfv.eu:5000/analyticserver:latest registry.sonata-nfv.eu:5000/analyticserver:int'
-            sh 'docker push registry.sonata-nfv.eu:5000/analyticserver:int'
+            sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
           }
         }
 	   stage('Deploying to integration') {
@@ -86,8 +86,8 @@ pipeline {
 		  steps {
         sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-engine:latest registry.sonata-nfv.eu:5000/tng-analytics-engine:int'
         sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:int'
-        sh 'docker tag registry.sonata-nfv.eu:5000/analyticserver:latest registry.sonata-nfv.eu:5000/analyticserver:int'
-        sh 'docker push registry.sonata-nfv.eu:5000/analyticserver:int'
+        sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
+        sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
         sh 'rm -rf tng-devops || true'
         sh 'git clone https://github.com/sonata-nfv/tng-devops.git'
         dir(path: 'tng-devops') {

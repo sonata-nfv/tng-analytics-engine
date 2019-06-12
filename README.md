@@ -9,6 +9,11 @@ This is a 5GTANGO component that aims to provide insights for the efficiency of 
 ### Documentation
 For get informed about how the Analytics Engine is interacting with other 5GTango components and what kind of APIs it exposes, please visit the wiki page: https://github.com/sonata-nfv/tng-analytics-engine/wiki
 
+### Prerequisites
+Be sure the apparmor-utils installed at the host machine in case you run the tng-analytics-engine as container
+```sudo apt-get install apparmor-utils
+```  
+
 ### CI Integration
 All pull requests are automatically tested by Jenkins and will only be accepted if no test is broken.
 
