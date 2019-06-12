@@ -15,7 +15,7 @@ WORKDIR /app
 #ENV PHYSIOG_URL localhost
 
 ENV MONGO_DB son-mongo
-ENV PHYSIOG_URL http://analyticserver
+ENV PHYSIOG_URL http://tng-analytics-rserver
 
 
 
