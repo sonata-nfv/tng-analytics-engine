@@ -11,7 +11,8 @@ For get informed about how the Analytics Engine is interacting with other 5GTang
 
 ### Prerequisites
 Be sure the apparmor-utils installed at the host machine in case you run the tng-analytics-engine as container
-```sudo apt-get install apparmor-utils
+```
+sudo apt-get install apparmor-utils
 ```  
 
 ### CI Integration
