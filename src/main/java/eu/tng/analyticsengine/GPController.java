@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.tng.graphprofiler;
+package eu.tng.analyticsengine;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import eu.tng.analyticsengine.Messaging.LogsFormat;
 import eu.tng.api.exception.CustomNotFoundException;
 import eu.tng.repository.dao.AnalyticResultRepository;
 import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticResult;
 import eu.tng.repository.domain.AnalyticService;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +42,9 @@ public class GPController {
     GPService graphProfilerService;
 
     @Autowired
+    LogsFormat logsFormat;
+
+    @Autowired
     private AnalyticServiceRepository analyticServiceRepository;
 
     @Autowired
@@ -60,7 +66,9 @@ public class GPController {
     //helthcheck call
     @RequestMapping("/ping")
     public String ping() {
-        return "pong";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        logsFormat.createLogInfo("I", timestamp.toString(), "healthcheck", "ping analytics engine", "200");
+        return "{ \"alive_now\": \"" + new Date() + "\"}";
     }
 
     //demo callback api for testing

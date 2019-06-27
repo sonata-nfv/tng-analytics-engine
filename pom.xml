@@ -11,7 +11,7 @@
     <groupId>eu.tng</groupId>
     <artifactId>tng-analytics-engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tng-graph-profiler</name>
+    <name>tng-analytics-engine</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.tng.graphprofiler;
+package eu.tng.analyticsengine;
 
 import com.google.gson.Gson;
+import eu.tng.analyticsengine.Messaging.LogsFormat;
 import eu.tng.repository.dao.AnalyticResultRepository;
 import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticResult;
@@ -17,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,6 +77,9 @@ public class GPService {
 
     @Autowired
     private AnalyticResultRepository analyticResulteRepository;
+
+    @Autowired
+    LogsFormat logsFormat;
 
     public String getPrometheusMetrics() {
 
@@ -190,10 +195,12 @@ public class GPService {
     }
 
     public List<String> get5gtangoVnVNetworkServiceMetrics(String nsr_id) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         List<String> metricswithDimensions = new ArrayList();
 
         String monitoringEngineURL = monitoringEngine + "/api/v2/services/" + nsr_id + "/metrics";
-        logger.info("connection to monitoring manager: " + monitoringEngineURL);
+        logsFormat.createLogInfo("I", timestamp.toString(), "Connection to monitoring manager", monitoringEngineURL, "200");
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -202,6 +209,11 @@ public class GPService {
         ResponseEntity<String> response = restTemplate.exchange(monitoringEngineURL, HttpMethod.GET, entity, String.class);
 
         JSONObject myresponse = new JSONObject(response.getBody());
+
+        if (!myresponse.getString("status").equalsIgnoreCase("Success")) {
+            logsFormat.createLogWarn("W", timestamp.toString(), "No monitoring metrics available", "No monitoring metrics available for nsr_id " + nsr_id, "200");
+            return metricswithDimensions;
+        }
 
         JSONArray vnfs = myresponse.getJSONArray("vnfs");
 
@@ -306,7 +318,7 @@ public class GPService {
         JSONArray metrics = null;
         if (vendor.equalsIgnoreCase("5gtango.vnv")) {
             if (analytic_service.has("testr_uuid")) {
-                
+
                 String testr_uuid = analytic_service.getString("testr_uuid");
                 JSONObject test_metadata = this.get5gtangoVnVTestMetadata(testr_uuid);
                 String nsr_id = test_metadata.getString("nsr_id");
