@@ -65,6 +65,9 @@ public class GPService {
     @Value("${monitoring.engine}")
     private String monitoringEngine;
 
+    @Value("${repository.url}")
+    private String repositoryURL;
+
     private static final Logger logger = Logger.getLogger(GPController.class.getName());
 
     @Autowired
@@ -185,13 +188,12 @@ public class GPService {
         return metricswithAllDimensions;
 
     }
-    
-    
-        public List<String> get5gtangoVnVNetworkServiceMetrics(String nsr_id) {
+
+    public List<String> get5gtangoVnVNetworkServiceMetrics(String nsr_id) {
         List<String> metricswithDimensions = new ArrayList();
 
         String monitoringEngineURL = monitoringEngine + "/api/v2/services/" + nsr_id + "/metrics";
-        logger.info("monitoringEngineURL---- "+monitoringEngineURL);
+        logger.info("connection to monitoring manager: " + monitoringEngineURL);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -225,7 +227,28 @@ public class GPService {
 
         return metricswithDimensions;
     }
-    
+
+    public JSONObject get5gtangoVnVTestMetadata(String testr_uuid) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(repositoryURL + "/trr/test-suite-results/" + testr_uuid, HttpMethod.GET, entity, String.class);
+        JSONObject myresponse = new JSONObject(response.getBody());
+
+        String nsr_id = myresponse.getString("instance_uuid");
+        String start = myresponse.getString("started_at");
+        String end = myresponse.getString("ended_at");
+
+        JSONObject responseObject = new JSONObject();
+        responseObject.put("nsr_id", nsr_id);
+        responseObject.put("start", start);
+        responseObject.put("end", end);
+
+        return responseObject;
+    }
 
     public List<String> get5gtangoSPNetworkServiceMetrics(String nsr_id) {
         List<String> metricswithDimensions = new ArrayList();
@@ -270,29 +293,46 @@ public class GPService {
     public void consumeAnalyticService(String analytic_service_info) throws IOException {
         Gson gson = new Gson();
         JSONObject analytic_service = new JSONObject(analytic_service_info);
-        JSONArray periods = analytic_service.getJSONArray("periods");
+        JSONArray periods = new JSONArray();
+        if (analytic_service.has("periods")) {
+            periods = analytic_service.getJSONArray("periods");
+        }
         String step = analytic_service.getString("step");//"'3m'"
-        String name = analytic_service.getString("name"); 
+        String name = analytic_service.getString("name");
         String vendor = analytic_service.getString("vendor");
 
         RestTemplate restTemplate = new RestTemplate();
 
         JSONArray metrics = null;
-        if (analytic_service.has("metrics")) {
-            metrics = analytic_service.getJSONArray("metrics");
-            System.out.println("metrics--> "+metrics);
-        } else if (vendor.equalsIgnoreCase("5gtango.vnv")) {
+        if (vendor.equalsIgnoreCase("5gtango.vnv")) {
+            if (analytic_service.has("testr_uuid")) {
+                
+                String testr_uuid = analytic_service.getString("testr_uuid");
+                JSONObject test_metadata = this.get5gtangoVnVTestMetadata(testr_uuid);
+                String nsr_id = test_metadata.getString("nsr_id");
 
-            if (analytic_service.has("nsr_id")) {
-                String nsr_id = analytic_service.getString("nsr_id");
-                List<String> metricslist = this.get5gtangoVnVNetworkServiceMetrics(nsr_id);
-                metrics = new JSONArray(metricslist);
-                System.out.println("metrics--> "+metrics);
+                if (analytic_service.has("metrics")) {
+                    metrics = analytic_service.getJSONArray("metrics");
+                } else {
+                    List<String> metricslist = this.get5gtangoVnVNetworkServiceMetrics(nsr_id);
+                    metrics = new JSONArray(metricslist);
+                }
+                System.out.println("metrics--> " + metrics);
+                JSONObject periodOne = new JSONObject();
+                periodOne.put("start", test_metadata.getString("start"));
+                periodOne.put("end", test_metadata.getString("end"));
+                periods.put(periodOne);
+                //System.out.println("periods------------" + periods.toString());
             }
 
+        } else if (analytic_service.has("metrics")) {
+            metrics = analytic_service.getJSONArray("metrics");
+            System.out.println("metrics--> " + metrics);
+        } else {
+            //TODO log no metrics requested
         }
 
-        logger.info("connect to prometheusURL"+prometheusURL);
+        logger.info("connect to prometheusURL" + prometheusURL);
         //System.out.println("metrics.toString()" + metrics.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -413,12 +453,12 @@ public class GPService {
 
         }
     }
-    
-     @ExceptionHandler({IOException.class})
+
+    @ExceptionHandler({IOException.class})
     public String handleError(java.io.IOException e) {
-        
+
         JSONObject response = new JSONObject();
-        
+
         response.put("code", "503");
         response.put("message", e.getMessage());
         return response.toString();

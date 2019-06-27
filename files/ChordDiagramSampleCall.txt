@@ -1,10 +1,9 @@
 curl -X POST \
   http://localhost:8082/analytic_service \
   -H 'Content-Type: application/json' \
-  -d '{"start":"2019-04-10T12:00:00.781Z",
-	"end":"2019-04-10T13:00:00.781Z",
+  -d '{"periods":[{"start":"2019-06-13T07:15:00.000Z","end":"2019-06-13T07:27:00.000Z"}],
 	"step":"3m",
-    "name":"ChordDiagram",
+    "name":"chord",
     "vendor":"matilda",
    "callback":"http://localhost:8082/analytic_service/124/status",
 	"metrics":["netdata:jmSRafpAkY:Gi2E9NYbxy:X2eHHQdkBW_system_softirqs_softirqs_persec_average{chart='\''system.softirqs'\'',dimension='\''BLOCK'\'',family='\''softirqs'\'',instance='\''[fca7:9e35:c403:630f:939a:ecb3:9cef:b487]:19999'\'',job='\''netdata'\''}",
