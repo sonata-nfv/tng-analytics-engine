@@ -7,4 +7,4 @@ RUN R -e "install.packages(c('devtools','xts','fpp2','scatterD3','dplyr','usdm',
 
 
 RUN R -e "devtools::install_github('mattflor/chorddiag')"
-RUN R -e "devtools::install_github('ubitech/Physiognomica')"
+RUN R -e "devtools::install_github('ubitech/Physiognomica',force=TRUE)"
