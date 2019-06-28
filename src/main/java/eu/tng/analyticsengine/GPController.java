@@ -152,6 +152,17 @@ public class GPController {
         as6.setResults(results6);
         analyticServiceRepository.save(as6);
 
+        AnalyticService as7 = new AnalyticService();
+        as7.setName("filter_healthy_metrics");
+        as7.setUrl("/ocpu/library/Physiognomica/R/filter_healthy_metrics");
+        as7.setDescription("Filter healthy metrics");
+        as7.setConstraints("No constraint");
+        List<String> results7 = new LinkedList<>();
+        results7.add("json");
+        results7.add("filter_healthy_metrics.html");
+        as7.setResults(results7);
+        analyticServiceRepository.save(as7);
+
         List<AnalyticService> analyticServicesList = analyticServiceRepository.findAll();
         JSONArray asl = new JSONArray(analyticServicesList);
 
