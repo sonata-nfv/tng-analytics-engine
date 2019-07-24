@@ -430,8 +430,7 @@ public class GPService {
 
                 //ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
                 String payload = gson.toJson(analyticresult);
-                StringEntity entity = new StringEntity(payload,
-                        ContentType.APPLICATION_JSON);
+                StringEntity entity = new StringEntity(payload,ContentType.APPLICATION_JSON);
 
                 HttpClient httpClient = HttpClientBuilder.create().build();
                 HttpPost request = new HttpPost(callback_url);

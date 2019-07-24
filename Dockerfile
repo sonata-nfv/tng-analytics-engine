@@ -16,6 +16,7 @@ WORKDIR /app
 
 ENV MONGO_DB son-mongo
 ENV PHYSIOG_URL http://tng-analytics-rserver
+ENV PROMETHEUS_GATEWAY pushgateway:9091
 
 
 
