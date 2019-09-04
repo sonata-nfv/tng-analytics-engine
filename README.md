@@ -12,7 +12,7 @@ This component is implemented in spring boot framework.boot, 2.1.7.RELEASE
 
 ### Installing from code
 
-The tng-analytics-engine is composed from two microservices. The tng-analytics-engine and the tng-analytics-rserver.
+The tng-analytics-engine is composed from two microservices. The tng-analytics-engine and the tng-analytics-rserver.  
 To have up and running then tng-analytics-engine from code, please do the following:
 ```  
 $ git clone https://github.com/sonata-nfv/tng-analytics-engine.git # Clone this repository
