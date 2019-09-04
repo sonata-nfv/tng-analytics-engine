@@ -6,13 +6,14 @@
 package eu.tng.analyticsengine;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import eu.tng.analyticsengine.Messaging.LogsFormat;
 import eu.tng.api.exception.CustomNotFoundException;
 import eu.tng.repository.dao.AnalyticResultRepository;
 import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticResult;
 import eu.tng.repository.domain.AnalyticService;
+import io.prometheus.client.Counter;
+import io.swagger.annotations.Api;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Eleni Fotopoulou <efotopoulou@ubitech.eu>
  */
 @RestController
+@Api(value="tng-analytics-engine", description="SONATA Analytics Engine")
+@RequestMapping("/")
 public class GPController {
 
     @Autowired
@@ -56,16 +59,17 @@ public class GPController {
     String prometheusURL;
 
     private static final Logger logger = Logger.getLogger(GPController.class.getName());
+    public static Counter requests = Counter.build().name("analytic_requests_total").help("Total analytic requests.").register();
 
     //profiler pageland
-    @RequestMapping("/")
+    @RequestMapping(value="/", method = RequestMethod.GET)
     public String info() {
-        return "Welcome to tng-profiler!";
+        return "Welcome to tng-analytics-engine!";
     }
 
     //helthcheck call
-    @RequestMapping("/ping")
-    public String ping() {
+    @RequestMapping(value="/ping", method = RequestMethod.GET)
+    public String ping() throws IOException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         logsFormat.createLogInfo("I", timestamp.toString(), "healthcheck", "ping analytics engine", "200");
         return "{ \"alive_now\": \"" + new Date() + "\"}";
