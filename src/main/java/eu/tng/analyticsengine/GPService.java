@@ -227,9 +227,18 @@ public class GPService {
 
                 for (int n = 0; n < metrics.length(); n++) {
                     JSONObject metric = metrics.getJSONObject(n);
+                    
+                     String metricwithDimensions = metric.getString("__name__");
+                     
+                     if (metric.has("name")){
+                     metricwithDimensions += "{name='" +metric.getString("name") + "'}";
+                     
+                     }else if (metric.has("resource_id")){
+                     metricwithDimensions += "{resource_id='" +metric.getString("resource_id") + "'}";
+                     }
 
-                    String metricwithDimensions = metric.getString("__name__") + "{"
-                            + "name='" + (metric.has("name") ? metric.getString("name") : "") + "'}";
+                    //String metricwithDimensions = metric.getString("__name__") + "{"
+                    //        + "name='" + (metric.has("name") ? metric.getString("name") : "") + "'}";
 
                     metricswithDimensions.add(metricwithDimensions);
                 }
