@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Eleni Fotopoulou <efotopoulou@ubitech.eu>
  */
 @RestController
-@Api(value="tng-analytics-engine", description="SONATA Analytics Engine")
+@Api(value = "tng-analytics-engine", description = "SONATA Analytics Engine")
 @RequestMapping("/")
 public class GPController {
 
@@ -62,13 +62,13 @@ public class GPController {
     public static Counter requests = Counter.build().name("analytic_requests_total").help("Total analytic requests.").register();
 
     //profiler pageland
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String info() {
         return "Welcome to tng-analytics-engine!";
     }
 
     //helthcheck call
-    @RequestMapping(value="/ping", method = RequestMethod.GET)
+    @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public String ping() throws IOException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         logsFormat.createLogInfo("I", timestamp.toString(), "healthcheck", "ping analytics engine", "200");
@@ -88,89 +88,7 @@ public class GPController {
     //Fetch all available analytic services
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getAnalyticServiceList() {
-
-//        if (true) {
-//            throw new CustomNotFoundException("Not found customer with name is ");
-//        }
-        analyticServiceRepository.deleteAll();
-
-        // save a couple of customers
-        AnalyticService as1 = new AnalyticService();
-        as1.setName("correlogram");
-        as1.setUrl("/ocpu/library/Physiognomica/R/correlogram");
-        as1.setDescription("Provide a correlogram with high statistical correlations between metrics");
-        as1.setConstraints("Select the set of metrics (more than one) to be used for the calculation of the correlation matrix");
-
-        List<String> results1 = new LinkedList<>();
-        results1.add("correlogram.html");
-        as1.setResults(results1);
-        analyticServiceRepository.save(as1);
-
-        AnalyticService as5 = new AnalyticService();
-        as5.setName("chord");
-        as5.setUrl("/ocpu/library/Physiognomica/R/chord");
-        as5.setDescription("Provide a correlogram with high statistical correlations between metrics via an interactive chord diagram");
-        as5.setConstraints("Select the set of metrics (more than one) to be used for the calculation of the correlation matrix");
-        List<String> results5 = new LinkedList<>();
-        results5.add("correlation_page.html");
-        as5.setResults(results5);
-        analyticServiceRepository.save(as5);
-
-        AnalyticService as2 = new AnalyticService();
-        as2.setName("TimeSeriesDecomposition");
-        as2.setUrl("/ocpu/library/Physiognomica/R/time_series_decomposition");
-        as2.setDescription("Provide a decomposition of a time series in seasonal, trend, and remainder parts");
-        as2.setConstraints("Select one metric to be used for time series decomposition");
-        List<String> results2 = new LinkedList<>();
-        results2.add("time_series_decomposition.html");
-        as2.setResults(results2);
-        analyticServiceRepository.save(as2);
-
-        AnalyticService as3 = new AnalyticService();
-        as3.setName("linear_regression");
-        as3.setUrl("/ocpu/library/Physiognomica/R/linear_regression");
-        as3.setDescription("Provide a linear regression model along with a scatterplot");
-        as3.setConstraints("Select the dependent and intenpendent variable for the linear regression model");
-        List<String> results3 = new LinkedList<>();
-        results3.add("linear_regression.html");
-        as3.setResults(results3);
-        analyticServiceRepository.save(as3);
-
-        AnalyticService as4 = new AnalyticService();
-        as4.setName("multiple_linear_regression");
-        as4.setUrl("/ocpu/library/Physiognomica/R/multiple_linear_regression");
-        as4.setDescription("Provide a multiple linear regression model along with composed visualizations");
-        as4.setConstraints("Select the dependent and intenpendent variable for the linear regression model");
-        List<String> results4 = new LinkedList<>();
-        results4.add("multiple_linear_regression.html");
-        as4.setResults(results4);
-        analyticServiceRepository.save(as4);
-
-        AnalyticService as6 = new AnalyticService();
-        as6.setName("test");
-        as6.setUrl("/ocpu/library/Physiognomica/R/test");
-        as6.setDescription("test");
-        as6.setConstraints("test");
-        List<String> results6 = new LinkedList<>();
-        results6.add("console");
-        as6.setResults(results6);
-        analyticServiceRepository.save(as6);
-
-        AnalyticService as7 = new AnalyticService();
-        as7.setName("filter_healthy_metrics");
-        as7.setUrl("/ocpu/library/Physiognomica/R/filter_healthy_metrics");
-        as7.setDescription("Filter healthy metrics");
-        as7.setConstraints("No constraint");
-        List<String> results7 = new LinkedList<>();
-        results7.add("json");
-        results7.add("filter_healthy_metrics.html");
-        as7.setResults(results7);
-        analyticServiceRepository.save(as7);
-
-        List<AnalyticService> analyticServicesList = analyticServiceRepository.findAll();
-        JSONArray asl = new JSONArray(analyticServicesList);
-
-        return asl.toString();
+        return new Gson().toJson(analyticServiceRepository.findAll());
     }
 
     //Fetch the whole list of the analytic results
