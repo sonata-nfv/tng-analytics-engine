@@ -24,9 +24,9 @@ ENV PROMETHEUS_URL http://son-monitor-prometheus:9090
 ENV REPOSITORY_URL http://tng-rep:4012
 
 
-#ENV MONITORING_ENGINE http://pre-int-vnv-bcn.5gtango.eu:8000
-#ENV PROMETHEUS_URL http://pre-int-vnv-bcn.5gtango.eu:9090
-#ENV REPOSITORY_URL http://pre-int-vnv-bcn.5gtango.eu:4012
+#ENV MONITORING_ENGINE http://int-vnv.5gtango.eu:8000
+#ENV PROMETHEUS_URL http://int-vnv.5gtango.eu:9090
+#ENV REPOSITORY_URL http://int-vnv.5gtango.eu:4012
 
 
 
