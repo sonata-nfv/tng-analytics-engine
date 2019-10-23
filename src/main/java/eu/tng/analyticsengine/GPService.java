@@ -227,19 +227,18 @@ public class GPService {
 
                 for (int n = 0; n < metrics.length(); n++) {
                     JSONObject metric = metrics.getJSONObject(n);
-                    
-                     String metricwithDimensions = metric.getString("__name__");
-                     
-                     if (metric.has("name")){
-                     metricwithDimensions += "{name='" +metric.getString("name") + "'}";
-                     
-                     }else if (metric.has("resource_id")){
-                     metricwithDimensions += "{resource_id='" +metric.getString("resource_id") + "'}";
-                     }
+
+                    String metricwithDimensions = metric.getString("__name__");
+
+                    if (metric.has("name")) {
+                        metricwithDimensions += "{name='" + metric.getString("name") + "'}";
+
+                    } else if (metric.has("resource_id")) {
+                        metricwithDimensions += "{resource_id='" + metric.getString("resource_id") + "'}";
+                    }
 
                     //String metricwithDimensions = metric.getString("__name__") + "{"
                     //        + "name='" + (metric.has("name") ? metric.getString("name") : "") + "'}";
-
                     metricswithDimensions.add(metricwithDimensions);
                 }
 
@@ -256,8 +255,10 @@ public class GPService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        System.out.println("repositoryURL"+repositoryURL);
         ResponseEntity<String> response = restTemplate.exchange(repositoryURL + "/trr/test-suite-results/" + testr_uuid, HttpMethod.GET, entity, String.class);
         JSONObject myresponse = new JSONObject(response.getBody());
+        System.out.println("response.getBody()"+response.getBody());
 
         String nsr_id = myresponse.getString("instance_uuid");
         String start = myresponse.getString("started_at");
@@ -267,6 +268,8 @@ public class GPService {
         responseObject.put("nsr_id", nsr_id);
         responseObject.put("start", start);
         responseObject.put("end", end);
+        responseObject.put("test_uuid", myresponse.getString("test_uuid"));
+        
 
         return responseObject;
     }
@@ -313,6 +316,7 @@ public class GPService {
     @Async
     public void consumeAnalyticService(String analytic_service_info) throws IOException {
         Gson gson = new Gson();
+        JSONObject metadata = new JSONObject();
         JSONObject analytic_service = new JSONObject(analytic_service_info);
         JSONArray periods = new JSONArray();
         if (analytic_service.has("periods")) {
@@ -326,10 +330,12 @@ public class GPService {
 
         JSONArray metrics = null;
         if (vendor.equalsIgnoreCase("5gtango.vnv")) {
+
             if (analytic_service.has("testr_uuid")) {
 
                 String testr_uuid = analytic_service.getString("testr_uuid");
                 JSONObject test_metadata = this.get5gtangoVnVTestMetadata(testr_uuid);
+                System.out.println("test_metadata"+test_metadata);
                 String nsr_id = test_metadata.getString("nsr_id");
 
                 if (analytic_service.has("metrics")) {
@@ -344,6 +350,10 @@ public class GPService {
                 periodOne.put("end", test_metadata.getString("end"));
                 periods.put(periodOne);
                 //System.out.println("periods------------" + periods.toString());
+
+                metadata.put("testr_uuid", testr_uuid);
+                metadata.put("test_uuid", test_metadata.getString("test_uuid"));
+
             }
 
         } else if (analytic_service.has("metrics")) {
@@ -423,6 +433,8 @@ public class GPService {
             analyticresult.setStatus("SUCCESS");
             analyticresult.setExecutionMessage("The analytic service has succesfully completed.");
             analyticresult.setAnalyticServiceName(name);
+            analyticresult.setAnalyticProcessFriendlyName(analytic_service.getString("process_friendly_name"));
+            analyticresult.setMetadata(metadata);
             analyticresult.setExecutionDate(new Date());
             analyticresult.setResults(response.toList());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
@@ -439,7 +451,7 @@ public class GPService {
 
                 //ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
                 String payload = gson.toJson(analyticresult);
-                StringEntity entity = new StringEntity(payload,ContentType.APPLICATION_JSON);
+                StringEntity entity = new StringEntity(payload, ContentType.APPLICATION_JSON);
 
                 HttpClient httpClient = HttpClientBuilder.create().build();
                 HttpPost request = new HttpPost(callback_url);
