@@ -7,9 +7,11 @@ package eu.tng.repository.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -25,10 +27,10 @@ public class AnalyticResult {
     private String callbackid;
 
     private String analyticServiceName;
-    
+
     private String analyticProcessFriendlyName;
-    
-    private JSONObject metadata;
+
+    private Map<String,String> metadata;
 
     private List results;
 
@@ -36,7 +38,7 @@ public class AnalyticResult {
     private String status;
 
     private String executionMessage;
-    
+
     private Date executionDate;
 
     public AnalyticResult() {
@@ -106,11 +108,11 @@ public class AnalyticResult {
         this.analyticProcessFriendlyName = analyticProcessFriendlyName;
     }
 
-    public JSONObject getMetadata() {
+    public Map<String,String> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(JSONObject metadata) {
+    public void setMetadata(Map<String,String> metadata) {
         this.metadata = metadata;
     }
 

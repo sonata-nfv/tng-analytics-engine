@@ -21,7 +21,9 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,16 +72,14 @@ public class GPService {
     @Value("${repository.url}")
     private String repositoryURL;
 
-    private static final Logger logger = Logger.getLogger(GPController.class.getName());
+    @Autowired
+    LogsFormat logsFormat;
 
     @Autowired
     private AnalyticServiceRepository analyticServiceRepository;
 
     @Autowired
     private AnalyticResultRepository analyticResulteRepository;
-
-    @Autowired
-    LogsFormat logsFormat;
 
     public String getPrometheusMetrics() {
 
@@ -255,11 +255,9 @@ public class GPService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        System.out.println("repositoryURL"+repositoryURL);
+        System.out.println("repositoryURL" + repositoryURL);
         ResponseEntity<String> response = restTemplate.exchange(repositoryURL + "/trr/test-suite-results/" + testr_uuid, HttpMethod.GET, entity, String.class);
         JSONObject myresponse = new JSONObject(response.getBody());
-        System.out.println("response.getBody()"+response.getBody());
-
         String nsr_id = myresponse.getString("instance_uuid");
         String start = myresponse.getString("started_at");
         String end = myresponse.getString("ended_at");
@@ -269,7 +267,6 @@ public class GPService {
         responseObject.put("start", start);
         responseObject.put("end", end);
         responseObject.put("test_uuid", myresponse.getString("test_uuid"));
-        
 
         return responseObject;
     }
@@ -315,8 +312,9 @@ public class GPService {
 
     @Async
     public void consumeAnalyticService(String analytic_service_info) throws IOException {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Gson gson = new Gson();
-        JSONObject metadata = new JSONObject();
+        Map<String, String> metadata = new HashMap<String, String>();
         JSONObject analytic_service = new JSONObject(analytic_service_info);
         JSONArray periods = new JSONArray();
         if (analytic_service.has("periods")) {
@@ -335,7 +333,6 @@ public class GPService {
 
                 String testr_uuid = analytic_service.getString("testr_uuid");
                 JSONObject test_metadata = this.get5gtangoVnVTestMetadata(testr_uuid);
-                System.out.println("test_metadata"+test_metadata);
                 String nsr_id = test_metadata.getString("nsr_id");
 
                 if (analytic_service.has("metrics")) {
@@ -344,7 +341,7 @@ public class GPService {
                     List<String> metricslist = this.get5gtangoVnVNetworkServiceMetrics(nsr_id);
                     metrics = new JSONArray(metricslist);
                 }
-                System.out.println("metrics--> " + metrics);
+                //System.out.println("metrics--> " + metrics);
                 JSONObject periodOne = new JSONObject();
                 periodOne.put("start", test_metadata.getString("start"));
                 periodOne.put("end", test_metadata.getString("end"));
@@ -358,13 +355,15 @@ public class GPService {
 
         } else if (analytic_service.has("metrics")) {
             metrics = analytic_service.getJSONArray("metrics");
-            System.out.println("metrics--> " + metrics);
+            //System.out.println("metrics--> " + metrics);
         } else {
             //TODO log no metrics requested
-        }
+            logsFormat.createLogError("E", timestamp.toString(), "No metrics are provided", "", "200");
 
-        logger.info("connect to prometheusURL" + prometheusURL);
-        //System.out.println("metrics.toString()" + metrics.toString());
+        }
+        logsFormat.createLogInfo("I", timestamp.toString(), "Connect to prometheus", prometheusURL, "200");
+        logsFormat.createLogInfo("I", timestamp.toString(), "Fetch Metrics from prometheus", metrics.toString(), "200");
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
@@ -379,8 +378,7 @@ public class GPService {
         AnalyticService as = analyticServiceRepository.findByName(name);
 
         String analytic_service_url = physiognomicaServerURL + as.getUrl();
-        System.out.println("analytic_service_url" + analytic_service_url);
-
+        logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
         ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
 
         String myresponse = "";
@@ -426,9 +424,9 @@ public class GPService {
                 }
 
             }
-            logger.info(response.toString());
+            logsFormat.createLogInfo("I", timestamp.toString(), "Response from analytic server", response.toString(), "200");
 
-            //save the analytic result
+            //save the analytic result            
             AnalyticResult analyticresult = new AnalyticResult();
             analyticresult.setStatus("SUCCESS");
             analyticresult.setExecutionMessage("The analytic service has succesfully completed.");
@@ -446,9 +444,9 @@ public class GPService {
                 HttpHeaders callbackHeaders = new HttpHeaders();
                 callbackHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-                logger.info("analyticresult  " + gson.toJson(analyticresult));
-                logger.info("callback_url  " + callback_url);
+                logsFormat.createLogInfo("I", timestamp.toString(), "Request callback url", callback_url, "200");
 
+                //logger.info("analyticresult  " + gson.toJson(analyticresult));
                 //ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
                 String payload = gson.toJson(analyticresult);
                 StringEntity entity = new StringEntity(payload, ContentType.APPLICATION_JSON);
@@ -468,7 +466,8 @@ public class GPService {
 
                     Optional<AnalyticResult> existing_as = analyticResulteRepository.findByCallbackid(callback_uuid);
                     if (existing_as.isPresent()) {
-                        logger.severe("duplicate callback_uuid. Analytic service is not saved");
+                        logsFormat.createLogError("E", timestamp.toString(), "duplicate callback_uuid. Analytic service is not saved", callback_url, "200");
+
                         analyticResulteRepository.delete(savedanalyticresult);
                         return;
                     } else {
