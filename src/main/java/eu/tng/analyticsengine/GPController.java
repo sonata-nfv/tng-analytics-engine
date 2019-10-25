@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -52,7 +54,7 @@ public class GPController {
     private AnalyticServiceRepository analyticServiceRepository;
 
     @Autowired
-    private AnalyticResultRepository analyticResulteRepository;
+    private AnalyticResultRepository analyticResultRepository;
 
     @Value("${prometheus.url}")
     String prometheusURL;
@@ -92,9 +94,22 @@ public class GPController {
 
     //Fetch the whole list of the analytic results
     @RequestMapping(value = "/results/list", method = RequestMethod.GET)
-    public String getAnalyticResultsList() {
+    public String getAnalyticResultsList(@RequestParam Map<String, String> queryParameters) {
 
-        List<AnalyticResult> analyticResultList = analyticResulteRepository.findAll();
+        if (queryParameters.containsKey("uuid")) {
+            String uuid = queryParameters.get("uuid");
+            Optional<AnalyticResult> analyticResult = analyticResultRepository.findByUuid(uuid);
+            if (!analyticResult.isPresent()) {
+               logger.info("NOT FOUND");
+                return new JSONObject().toString();
+
+            }
+            logger.info("analyticResult" + analyticResult.get().toString());
+            Gson gson = new Gson();
+            return gson.toJson(analyticResult);
+        }
+
+        List<AnalyticResult> analyticResultList = analyticResultRepository.findAll();
         JSONArray arl = new JSONArray(analyticResultList);
 
         return arl.toString();
@@ -104,7 +119,7 @@ public class GPController {
     @RequestMapping(value = "/results/{callback_id}", method = RequestMethod.GET)
     public String getAnalyticResults(@PathVariable("callback_id") String callback_id) {
 
-        Optional<AnalyticResult> analyticResult = analyticResulteRepository.findByCallbackid(callback_id);
+        Optional<AnalyticResult> analyticResult = analyticResultRepository.findByCallbackid(callback_id);
         logger.info(callback_id);
         return new Gson().toJson(analyticResult.get());
     }
@@ -205,10 +220,10 @@ public class GPController {
     public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_uuid") String result_uuid
     ) {
 
-        analyticResulteRepository.deleteByUuid(result_uuid);
+        analyticResultRepository.deleteByUuid(result_uuid);
         HttpHeaders responseHeaders = new HttpHeaders();
         JSONObject response = new JSONObject();
-        response.put("message", "Analytic Result with uuid "+result_uuid+" is succesfully deleted");
+        response.put("message", "Analytic Result with uuid " + result_uuid + " is succesfully deleted");
         String responseAsString = response.toString();
         responseHeaders.set("Content-Length", String.valueOf(responseAsString.length()));
         ResponseEntity responseEntity = new ResponseEntity(responseAsString, responseHeaders, HttpStatus.OK);
