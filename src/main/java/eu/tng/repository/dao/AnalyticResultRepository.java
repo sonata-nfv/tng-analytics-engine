@@ -20,7 +20,5 @@ public interface AnalyticResultRepository extends MongoRepository<AnalyticResult
 
     public Optional<AnalyticResult> findByCallbackid(String callbackid);
     public List<AnalyticResult> findAll();
-    public void deleteByUuid(String uuid);
-    public Optional<AnalyticResult> findByUuid(String uuid);
 
 }
