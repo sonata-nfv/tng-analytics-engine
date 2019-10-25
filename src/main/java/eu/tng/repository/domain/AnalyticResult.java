@@ -22,6 +22,7 @@ public class AnalyticResult {
     @Id
     private String id;
     
+    //To be added
     //private UUID uuid;
 
     private String callbackid;
