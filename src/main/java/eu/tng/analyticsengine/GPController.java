@@ -96,9 +96,9 @@ public class GPController {
     @RequestMapping(value = "/results/list", method = RequestMethod.GET)
     public String getAnalyticResultsList(@RequestParam Map<String, String> queryParameters) {
 
-        if (queryParameters.containsKey("uuid")) {
-            String uuid = queryParameters.get("uuid");
-            Optional<AnalyticResult> analyticResult = analyticResultRepository.findByUuid(uuid);
+        if (queryParameters.containsKey("result_id")) {
+            String result_id = queryParameters.get("result_id");
+            Optional<AnalyticResult> analyticResult = analyticResultRepository.findById(result_id);
             if (!analyticResult.isPresent()) {
                logger.info("NOT FOUND");
                 return new JSONObject().toString();
@@ -106,7 +106,7 @@ public class GPController {
             }
             logger.info("analyticResult" + analyticResult.get().toString());
             Gson gson = new Gson();
-            return gson.toJson(analyticResult);
+            return gson.toJson(analyticResult.get());
         }
 
         List<AnalyticResult> analyticResultList = analyticResultRepository.findAll();
@@ -216,14 +216,14 @@ public class GPController {
         graphProfilerService.consumeAnalyticService(analytic_service_info);
     }
 
-    @RequestMapping(value = "/{result_uuid}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_uuid") String result_uuid
+    @RequestMapping(value = "/{result_id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_id") String result_id
     ) {
-
-        analyticResultRepository.deleteByUuid(result_uuid);
+        logger.info("result_uuid to delete"+result_id);
+        analyticResultRepository.deleteById(result_id);
         HttpHeaders responseHeaders = new HttpHeaders();
         JSONObject response = new JSONObject();
-        response.put("message", "Analytic Result with uuid " + result_uuid + " is succesfully deleted");
+        response.put("message", "Analytic Result with id " + result_id + " is succesfully deleted");
         String responseAsString = response.toString();
         responseHeaders.set("Content-Length", String.valueOf(responseAsString.length()));
         ResponseEntity responseEntity = new ResponseEntity(responseAsString, responseHeaders, HttpStatus.OK);

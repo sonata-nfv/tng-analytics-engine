@@ -436,7 +436,7 @@ public class GPService {
             analyticresult.setMetadata(metadata);
             analyticresult.setExecutionDate(new Date());
             analyticresult.setResults(response.toList());
-            analyticresult.setUuid(UUID.randomUUID());
+            //analyticresult.setUuid(UUID.randomUUID());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
 
             //update the callback url if any

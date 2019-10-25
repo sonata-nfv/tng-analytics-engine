@@ -22,7 +22,7 @@ public class AnalyticResult {
     @Id
     private String id;
     
-    private UUID uuid;
+    //private UUID uuid;
 
     private String callbackid;
 
@@ -116,12 +116,12 @@ public class AnalyticResult {
         this.metadata = metadata;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
+//    public UUID getUuid() {
+//        return uuid;
+//    }
+//
+//    public void setUuid(UUID uuid) {
+//        this.uuid = uuid;
+//    }
 
 }
