@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -435,6 +436,7 @@ public class GPService {
             analyticresult.setMetadata(metadata);
             analyticresult.setExecutionDate(new Date());
             analyticresult.setResults(response.toList());
+            analyticresult.setUuid(UUID.randomUUID());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
 
             //update the callback url if any

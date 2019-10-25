@@ -23,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,8 +54,6 @@ public class GPController {
     @Autowired
     private AnalyticResultRepository analyticResulteRepository;
 
-    //@Value("${physiognomica.server.url}")
-    //String physiognomicaServerURL;
     @Value("${prometheus.url}")
     String prometheusURL;
 
@@ -200,10 +201,18 @@ public class GPController {
         graphProfilerService.consumeAnalyticService(analytic_service_info);
     }
 
-    @ExceptionHandler(CustomNotFoundException.class)
-    public String handleError(CustomNotFoundException e) {
+    @RequestMapping(value = "/{result_uuid}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_uuid") String result_uuid
+    ) {
 
-        return "adfadfadfadfasdfadsf " + e.getMessage();
+        analyticResulteRepository.deleteByUuid(result_uuid);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        JSONObject response = new JSONObject();
+        response.put("message", "Analytic Result with uuid "+result_uuid+" is succesfully deleted");
+        String responseAsString = response.toString();
+        responseHeaders.set("Content-Length", String.valueOf(responseAsString.length()));
+        ResponseEntity responseEntity = new ResponseEntity(responseAsString, responseHeaders, HttpStatus.OK);
+        return responseEntity;
     }
 
 }

@@ -8,10 +8,8 @@ package eu.tng.repository.domain;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.UUID;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -23,6 +21,8 @@ public class AnalyticResult {
 
     @Id
     private String id;
+    
+    private UUID uuid;
 
     private String callbackid;
 
@@ -114,6 +114,14 @@ public class AnalyticResult {
 
     public void setMetadata(Map<String,String> metadata) {
         this.metadata = metadata;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
 }
