@@ -100,7 +100,7 @@ public class GPController {
             String result_id = queryParameters.get("result_id");
             Optional<AnalyticResult> analyticResult = analyticResultRepository.findById(result_id);
             if (!analyticResult.isPresent()) {
-               logger.info("NOT FOUND");
+                logger.info("NOT FOUND");
                 return new JSONObject().toString();
 
             }
@@ -219,7 +219,7 @@ public class GPController {
     @RequestMapping(value = "/{result_id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_id") String result_id
     ) {
-        logger.info("result_uuid to delete"+result_id);
+        logger.info("result_uuid to delete" + result_id);
         analyticResultRepository.deleteById(result_id);
         HttpHeaders responseHeaders = new HttpHeaders();
         JSONObject response = new JSONObject();
