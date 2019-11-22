@@ -11,8 +11,10 @@ services:
      context: .
      dockerfile: Dockerfile
     container_name:  tng-analytics-engine 
+    volumes:
+      - asset-volume:/var/www/html
     ports:
-      - "8085:8085"
+      - 8085:8085
     depends_on:
       - son-mongo
       - tng-analytics-rserver
@@ -23,6 +25,18 @@ services:
      dockerfile: tng-analytics-rserver/Dockerfile
     container_name: tng-analytics-rserver
     ports:
-      - "8083:80"
+      - 8083:80
+    restart: always
+  tng-analytics-results:
+    build:
+     context: .
+     dockerfile: tng-analytics-results/Dockerfile
+    container_name: tng-analytics-results
+    volumes:
+      - asset-volume:/var/www/html
+    ports:
+      - 8086:80
     restart: always
 
+volumes:
+  asset-volume:

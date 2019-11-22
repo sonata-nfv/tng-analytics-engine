@@ -138,3 +138,8 @@ The following lead developers are responsible for this repository and have admin
 * Gitter room [![Join the chat at https://gitter.im/5gtango/tango-schema](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sonata-nfv/5gtango-vnv)
 
 * Please use the GitHub issues to report bugs.
+
+---notes for jenkins file
+docker run -i -p 8086:80 -v asset-volume:/var/www/html  -td tng-analytics-engine
+docker run -p 8085:8085  --volumes-from tng-analytics-results  --name tng-analytics-engine tng-analytics-engine
+

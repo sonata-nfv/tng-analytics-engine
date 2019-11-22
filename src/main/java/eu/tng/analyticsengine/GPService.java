@@ -12,12 +12,19 @@ import eu.tng.repository.dao.AnalyticServiceRepository;
 import eu.tng.repository.domain.AnalyticResult;
 import eu.tng.repository.domain.AnalyticService;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -387,46 +394,6 @@ public class GPService {
                 .getStatusCode()
                 .is2xxSuccessful()) {
 
-            myresponse = response3.getBody();
-            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
-
-            String lines[] = myresponse.split("\\r?\\n");
-            JSONArray response = new JSONArray();
-            List<String> resultslist = as.getResults();
-            for (String line : lines) {
-
-                if (resultslist.stream().anyMatch(s -> line.contains(s))) {
-                    if (line.contains("html")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "html");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("csv")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "csv");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("json")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "json");
-                        result.put("result", line);
-                        response.put(result);
-                    } else if (line.contains("jpg") || line.contains("png")) {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "img");
-                        result.put("result", line);
-                        response.put(result);
-                    } else {
-                        JSONObject result = new JSONObject();
-                        result.put("type", "txt");
-                        result.put("result", line);
-                        response.put(result);
-                    }
-                }
-
-            }
-            logsFormat.createLogInfo("I", timestamp.toString(), "Response from analytic server", response.toString(), "200");
-
             //save the analytic result            
             AnalyticResult analyticresult = new AnalyticResult();
             analyticresult.setStatus("SUCCESS");
@@ -435,9 +402,45 @@ public class GPService {
             analyticresult.setAnalyticProcessFriendlyName(analytic_service.getString("process_friendly_name"));
             analyticresult.setMetadata(metadata);
             analyticresult.setExecutionDate(new Date());
-            analyticresult.setResults(response.toList());
+            //analyticresult.setResults(response.toList());
             //analyticresult.setUuid(UUID.randomUUID());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
+
+            myresponse = response3.getBody();
+            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+
+            String lines[] = myresponse.split("\\r?\\n");
+            JSONArray response = new JSONArray();
+            List<String> resultslist = as.getResults();
+
+            for (String line : lines) {
+                if (resultslist.stream().anyMatch(s -> line.contains(s))) {
+                    JSONObject result = new JSONObject();
+                    if (line.contains("html")) {
+                        result.put("type", "html");
+                    } else if (line.contains("csv")) {
+                        result.put("type", "csv");
+                    } else if (line.contains("json")) {
+                        result.put("type", "json");
+                    } else if (line.contains("jpg") || line.contains("png")) {
+                        result.put("type", "img");
+                    } else {
+                        result.put("type", "txt");
+                    }
+                    //save results at tng-analytics-engine
+                    String[] line_parts = line.split("/");
+                    String filename = line_parts[line_parts.length - 1];
+                    saveFileFromURL(line, savedanalyticresult.getId(), filename);
+                    result.put("result", "/" + savedanalyticresult.getId() + "/" + filename);
+                    response.put(result);
+                }
+
+            }
+
+            savedanalyticresult.setResults(response.toList());
+            analyticResulteRepository.save(savedanalyticresult);
+
+            logsFormat.createLogInfo("I", timestamp.toString(), "Response from analytic server", response.toString(), "200");
 
             //update the callback url if any
             if (analytic_service.has("callback")) {
@@ -485,6 +488,64 @@ public class GPService {
             }
 
         }
+    }
+
+    public void saveFileFromURL(String urlString, String folderName, String resultName) {
+
+        //System.out.println(urlString + "-------------" + folderName + "-----------------------" + resultName);
+        BufferedReader br = null;
+        try {
+            //URL oracle = new URL(urlString);
+            String content = sendGet(urlString);
+
+            String fileName = "/var/www/html/" + folderName;
+            Path path = Paths.get(fileName);
+
+            Files.createDirectories(path);
+
+            Files.write(Paths.get(fileName + "/" + resultName), content.getBytes());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GPService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GPService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(GPService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(GPService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+    }
+
+    private String sendGet(String url) throws Exception {
+
+        URL obj = new URL(url);
+        CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        //System.out.println("\nSending 'GET' request to URL : " + url);
+        //System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        System.out.println(response.toString());
+        return response.toString();
+
     }
 
     @ExceptionHandler({IOException.class})
