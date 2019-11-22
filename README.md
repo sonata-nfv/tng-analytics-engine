@@ -33,7 +33,7 @@ The following lead developers are responsible for this repository and have admin
 
 * Please use the GitHub issues to report bugs.
 
----notes for jenkins file
+---notes for running locally the containers---
 docker run -i -p 8086:80 -v asset-volume:/var/www/html  -td tng-analytics-engine
 docker run -p 8085:8085  --volumes-from tng-analytics-results  --name tng-analytics-engine tng-analytics-engine
 
