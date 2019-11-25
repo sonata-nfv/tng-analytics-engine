@@ -17,7 +17,7 @@ WORKDIR /app
 
 #ENV MONGO_DB localhost
 #ENV PHYSIOG_URL localhost
-#ENV PHYSIOG_URL http://192.168.7.164:8083
+#ENV PHYSIOG_URL http://192.168.88.245:8083
 
 ENV MONGO_DB son-mongo
 ENV PHYSIOG_URL http://tng-analytics-rserver

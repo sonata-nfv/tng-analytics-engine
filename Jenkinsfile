@@ -34,17 +34,17 @@ pipeline {
         }
         stage('Publishing tng-analytics-engine') {
           steps {
-            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:latest'
           }
         }
         stage('Publishing tng-analytics-rserver') {
           steps {
-            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest'
           }
         }
         stage('Publishing tng-analytics-results') {
           steps {
-            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-results'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-results:latest'
           }
         }
       }
@@ -144,7 +144,6 @@ pipeline {
                     sh 'rm -rf tng-devops || true'
                     sh 'git clone https://github.com/sonata-nfv/tng-devops.git'
                     dir(path: 'tng-devops') {
-                    sh 'ansible-playbook roles/sp.yml -i environments -e "target=sta-sp-v5-0 component=analytics"'
                     sh 'ansible-playbook roles/vnv.yml -i environments -e "target=sta-vnv-v5-0 component=analytics"'
                     }
                 }

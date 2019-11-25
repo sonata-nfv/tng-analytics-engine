@@ -318,6 +318,61 @@ public class GPService {
         return metricswithDimensions;
     }
 
+    public String addRAnalyticService(String analytic_service_info) throws IOException {
+
+        JSONObject response = new JSONObject();
+
+        JSONObject analytic_service = new JSONObject(analytic_service_info);
+
+        String repo = analytic_service.getString("repo");
+        String function = analytic_service.getString("function");
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
+        map3.add("repo", "'" + repo + "'");
+        map3.add("dependencies", "true");
+        map3.add("force", "true");
+
+        HttpEntity<MultiValueMap<String, String>> request_parameters = new HttpEntity<>(map3, headers);
+        String analytic_service_url = "";
+        if (function.equalsIgnoreCase("install_github")) {
+            analytic_service_url = physiognomicaServerURL + "/ocpu/library/remotes/R/install_github";
+        } else {
+            analytic_service_url = physiognomicaServerURL + "/ocpu/library/remotes/R/install_cran";
+        }
+        ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, request_parameters, String.class);
+
+        String myresponse = "";
+        if (null != response3 && null != response3.getStatusCode() && response3
+                .getStatusCode()
+                .is2xxSuccessful()) {
+
+            myresponse = response3.getBody();
+            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+
+            String lines[] = myresponse.split("\\r?\\n");
+
+            for (String line : lines) {
+                if (line.contains("messages")) {
+                    try {
+                        response.put("code", response3.getStatusCode());
+                        response.put("message", sendGet(line));
+                        return response.toString();
+
+                    } catch (Exception ex) {
+                        Logger.getLogger(GPService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        }
+        response.put("code", response3.getStatusCode());
+        response.put("message", "Problem in installing package: " + repo);
+        return response.toString();
+    }
+
     @Async
     public void consumeAnalyticService(String analytic_service_info) throws IOException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
