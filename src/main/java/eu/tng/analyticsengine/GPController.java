@@ -217,13 +217,14 @@ public class GPController {
     }
 
     @RequestMapping(value = "/add_R_analytic_service", method = RequestMethod.POST)
-    public void addRAnalyticService(@RequestBody String analytic_service_info
+    public String addRAnalyticService(@RequestBody String analytic_service_info
     ) throws IOException {
         String response = graphProfilerService.addRAnalyticService(analytic_service_info);
-        logger.info("response" + response);
+        //logger.info("response" + response);
+        return response;
     }
 
-    @RequestMapping(value = "/{result_id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/results/{result_id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteAnalyticProcessReuslt(@PathVariable("result_id") String result_id
     ) {
         logger.info("result_uuid to delete" + result_id);
