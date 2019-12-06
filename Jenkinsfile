@@ -18,6 +18,11 @@ pipeline {
             sh 'docker build -t registry.sonata-nfv.eu:5000/tng-analytics-rserver -f tng-analytics-rserver/Dockerfile tng-analytics-rserver/'
           }
         }
+        stage('Building tng-analytics-pserver') {
+          steps {
+            sh 'docker build -t registry.sonata-nfv.eu:5000/tng-analytics-pserver -f tng-analytics-pserver/Dockerfile tng-analytics-pserver/'
+          }
+        }        
         stage('Building tng-analytics-results') {
           steps {
             sh 'docker build -t registry.sonata-nfv.eu:5000/tng-analytics-results -f tng-analytics-results/Dockerfile tng-analytics-results/'
@@ -40,6 +45,11 @@ pipeline {
         stage('Publishing tng-analytics-rserver') {
           steps {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest'
+          }
+        }
+        stage('Publishing python server tng-analytics-pserver ') {
+          steps {
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest'
           }
         }
         stage('Publishing tng-analytics-results') {
@@ -89,6 +99,12 @@ pipeline {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
           }
         }
+        stage('tng-analytics-pserver') {
+          steps {
+            sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest registry.sonata-nfv.eu:5000/tng-analytics-pserver:int'
+            sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:int'
+          }
+        }
         stage('tng-analytics-results') {
           steps {
             sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest registry.sonata-nfv.eu:5000/tng-analytics-results:int'
@@ -104,6 +120,8 @@ pipeline {
         sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:int'
         sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
         sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:int'
+        sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest registry.sonata-nfv.eu:5000/tng-analytics-pserver:int'
+        sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:int'
         sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest registry.sonata-nfv.eu:5000/tng-analytics-results:int'
         sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-results:int'
         sh 'rm -rf tng-devops || true'
@@ -132,6 +150,11 @@ pipeline {
                     sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest sonatanfv/tng-analytics-rserver:v5.0'
                     sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:v5.0'
                     sh 'docker push sonatanfv/tng-analytics-rserver:v5.0'
+                    
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.0'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest sonatanfv/tng-analytics-pserver:v5.0'
+                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.0'
+                    sh 'docker push sonatanfv/tng-analytics-pserver:v5.0'
                     
                     sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest registry.sonata-nfv.eu:5000/tng-analytics-results:v5.0'
                     sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest sonatanfv/tng-analytics-results:v5.0'

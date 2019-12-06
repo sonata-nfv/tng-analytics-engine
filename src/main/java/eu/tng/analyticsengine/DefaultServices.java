@@ -126,6 +126,16 @@ public class DefaultServices {
         as7.setResults(results7);
         analyticServiceRepository.save(as7);
 
+        AnalyticService as8 = new AnalyticService();
+        as8.setName("matplot_linear_regression");
+        as8.setUrl("/panalytics/api/v1.0/prometheusMetricsAnalyzer/linear_regression/ln");
+        as8.setDescription("matplot_linear_regression");
+        as8.setConstraints("Select the dependent and intenpendent variable for the linear regression model");
+        List<String> results8 = new LinkedList<>();
+        results8.add("linear_regression.html");
+        as8.setResults(results8);
+        analyticServiceRepository.save(as8);
+
         List<AnalyticService> analyticServicesList = analyticServiceRepository.findAll();
         JSONArray asl = new JSONArray(analyticServicesList);
 
