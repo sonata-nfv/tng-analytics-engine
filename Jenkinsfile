@@ -47,7 +47,7 @@ pipeline {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest'
           }
         }
-        stage('Publishing python server tng-analytics-pserver ') {
+        stage('Publishing tng-analytics-pserver ') {
           steps {
             sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest'
           }
