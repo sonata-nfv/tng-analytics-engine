@@ -21,7 +21,7 @@ WORKDIR /app
 
 ENV MONGO_DB son-mongo
 ENV PHYSIOG_URL http://tng-analytics-rserver
-ENV PANALYTICS_URL http://tng-analytics-pserver:8087
+ENV PANALYTICS_URL http://tng-analytics-pserver:5000
 
 
 
