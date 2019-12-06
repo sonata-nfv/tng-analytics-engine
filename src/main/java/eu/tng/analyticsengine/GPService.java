@@ -71,6 +71,9 @@ public class GPService {
     @Value("${physiognomica.server.url}")
     private String physiognomicaServerURL;
 
+    @Value("${panalytics.server.url}")
+    private String panalyticsServerURL;
+
     @Value("${prometheus.url}")
     private String prometheusURL;
 
@@ -387,8 +390,7 @@ public class GPService {
         String name = analytic_service.getString("name");
         String vendor = analytic_service.getString("vendor");
 
-        RestTemplate restTemplate = new RestTemplate();
-
+        //RestTemplate restTemplate = new RestTemplate();
         JSONArray metrics = null;
         if (vendor.equalsIgnoreCase("5gtango.vnv")) {
 
@@ -427,27 +429,54 @@ public class GPService {
         logsFormat.createLogInfo("I", timestamp.toString(), "Connect to prometheus", prometheusURL, "200");
         logsFormat.createLogInfo("I", timestamp.toString(), "Fetch Metrics from prometheus", metrics.toString(), "200");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
-        map3.add("prometheus_url", "'" + prometheusURL + "'");
-        map3.add("metrics", metrics.toString());
-        map3.add("step", "'" + step + "'");
-        map3.add("periods", periods.toString());
-        map3.add("enriched", "true");
-
-        HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
-
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
+//        map3.add("prometheus_url", "'" + prometheusURL + "'");
+//        map3.add("metrics", metrics.toString());
+//        map3.add("step", "'" + step + "'");
+//        map3.add("periods", periods.toString());
+        //       HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
         AnalyticService as = analyticServiceRepository.findByName(name);
 
-        String analytic_service_url = physiognomicaServerURL + as.getUrl();
-        logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
-        ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
+        String analytic_service_partial_url = as.getUrl();
 
+        JSONObject request_json = new JSONObject();
+        request_json.put("prometheus_url", "'" + prometheusURL + "'");
+        request_json.put("metrics", metrics.toString());
+        request_json.put("step", "'" + step + "'");
+        request_json.put("periods", periods.toString());
+
+        StringEntity entity = new StringEntity(request_json.toString(), ContentType.APPLICATION_JSON);
+
+        HttpClient httpClient = HttpClientBuilder.create().build();
+
+        String analytic_service_url = "";
+        if (analytic_service_partial_url.contains("ocpu")) {
+            //map3.add("enriched", "true");
+            request_json.put("enriched", "true");
+            analytic_service_url = physiognomicaServerURL + as.getUrl();
+        } else {
+            analytic_service_url = panalyticsServerURL + as.getUrl();
+        }
+
+        HttpPost request = new HttpPost(analytic_service_url);
+        request.setEntity(entity);
+
+        HttpResponse testresponse = httpClient.execute(request);
+        int statuscode = testresponse.getStatusLine().getStatusCode();
+
+        System.out.println("statuscode" + statuscode);
+        logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url + " with payload " + request_json, "200");
+
+        //logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
+        //ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
         String myresponse = "";
-        if (null != response3 && null != response3.getStatusCode() && response3
-                .getStatusCode()
-                .is2xxSuccessful()) {
+        if (statuscode == 200 || statuscode == 201) {
+
+            org.apache.http.HttpEntity entity1 = testresponse.getEntity();
+            myresponse = EntityUtils.toString((org.apache.http.HttpEntity) entity1);
+            logsFormat.createLogInfo("I", timestamp.toString(), "Response from analytic service", myresponse, "200");
 
             //save the analytic result            
             AnalyticResult analyticresult = new AnalyticResult();
@@ -461,8 +490,13 @@ public class GPService {
             //analyticresult.setUuid(UUID.randomUUID());
             AnalyticResult savedanalyticresult = analyticResulteRepository.save(analyticresult);
 
-            myresponse = response3.getBody();
-            myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+            //myresponse = response3.getBody();
+            if (myresponse.contains("ocpu")) {
+                myresponse = myresponse.replace("/ocpu/tmp/", physiognomicaServerURL + "/ocpu/tmp/");
+
+            } else {
+                myresponse = panalyticsServerURL + "/" + myresponse;
+            }
 
             String lines[] = myresponse.split("\\r?\\n");
             JSONArray response = new JSONArray();
@@ -484,7 +518,12 @@ public class GPService {
                     }
                     //save results at tng-analytics-engine
                     String[] line_parts = line.split("/");
-                    String filename = line_parts[line_parts.length - 1];
+                    String filename = "";
+                    if (line_parts.length > 1) {
+                        filename = line_parts[line_parts.length - 1];
+                    } else {
+                        filename = line;
+                    }
                     saveFileFromURL(line, savedanalyticresult.getId(), filename);
                     result.put("result", "/" + savedanalyticresult.getId() + "/" + filename);
                     response.put(result);
@@ -509,19 +548,19 @@ public class GPService {
                 //logger.info("analyticresult  " + gson.toJson(analyticresult));
                 //ResponseEntity<String> callback_response = restTemplate.postForEntity(callback_url, gson.toJson(analyticresult), String.class);
                 String payload = gson.toJson(analyticresult);
-                StringEntity entity = new StringEntity(payload, ContentType.APPLICATION_JSON);
+                StringEntity callback_entity = new StringEntity(payload, ContentType.APPLICATION_JSON);
 
-                HttpClient httpClient = HttpClientBuilder.create().build();
-                HttpPost request = new HttpPost(callback_url);
-                request.setEntity(entity);
+                HttpClient callback_httpClient = HttpClientBuilder.create().build();
+                HttpPost callback_request = new HttpPost(callback_url);
+                callback_request.setEntity(callback_entity);
 
-                HttpResponse testresponse = httpClient.execute(request);
-                int statuscode = testresponse.getStatusLine().getStatusCode();
+                HttpResponse callback_response = callback_httpClient.execute(callback_request);
+                int callback_statuscode = callback_response.getStatusLine().getStatusCode();
 
-                if (statuscode == 200) {
-                    org.apache.http.HttpEntity entity1 = testresponse.getEntity();
+                if (callback_statuscode == 200) {
+                    org.apache.http.HttpEntity call_back_entity = callback_response.getEntity();
                     // Read the contents of an entity and return it as a String.
-                    String content = EntityUtils.toString((org.apache.http.HttpEntity) entity1);
+                    String content = EntityUtils.toString((org.apache.http.HttpEntity) call_back_entity);
                     String callback_uuid = content;
 
                     Optional<AnalyticResult> existing_as = analyticResulteRepository.findByCallbackid(callback_uuid);

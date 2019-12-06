@@ -27,6 +27,14 @@ services:
     ports:
       - 8083:80
     restart: always
+  tng-analytics-pserver:
+    build:
+     context: .
+     dockerfile: tng-analytics-pserver/Dockerfile
+    container_name:  tng-analytics-pserver 
+    ports:
+      - 8087:5000
+    restart: always
   tng-analytics-results:
     build:
      context: .
