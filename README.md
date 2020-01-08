@@ -51,6 +51,15 @@ R
 >>devtools::install_github('mattflor/chorddiag')
 >>devtools::install_github('ubitech/Physiognomica',force=TRUE)
 ```
+
+To have up and running then tng-analytics-pserver from code, please do the following:
+```  
+$ cd tng-analytics-engine/tng-analytics-pserver 
+$ pip3 install --upgrade pip && pip install -r requirements.txt
+$ python3 ./app.py
+```  
+tng-analytics-results is just an apache2 server 
+
 ### Installing from the Docker container
 
 In case you prefer a docker based development, you can run the following commands (bash shell):
