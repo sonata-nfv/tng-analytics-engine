@@ -134,41 +134,32 @@ pipeline {
 
       }
     }
-    stage('Promoting release v5.0') {
+    stage('Promoting release v5.1') {
         when {
-            branch 'v5.0'
+            branch 'v5.1'
         }
         stages {
             stage('Generating release') {
                 steps {
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-engine:latest registry.sonata-nfv.eu:5000/tng-analytics-engine:v5.0'
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-engine:latest sonatanfv/tng-analytics-engine:v5.0'
-                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:v5.0'
-                    sh 'docker push sonatanfv/tng-analytics-engine:v5.0'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-engine:latest registry.sonata-nfv.eu:5000/tng-analytics-engine:v5.1'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-engine:latest sonatanfv/tng-analytics-engine:v5.1'
+                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-engine:v5.1'
+                    sh 'docker push sonatanfv/tng-analytics-engine:v5.1'
                     
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest registry.sonata-nfv.eu:5000/tng-analytics-rserver:v5.0'
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest sonatanfv/tng-analytics-rserver:v5.0'
-                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:v5.0'
-                    sh 'docker push sonatanfv/tng-analytics-rserver:v5.0'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest registry.sonata-nfv.eu:5000/tng-analytics-rserver:v5.1'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-rserver:latest sonatanfv/tng-analytics-rserver:v5.1'
+                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-rserver:v5.1'
+                    sh 'docker push sonatanfv/tng-analytics-rserver:v5.1'
                     
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.0'
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest sonatanfv/tng-analytics-pserver:v5.0'
-                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.0'
-                    sh 'docker push sonatanfv/tng-analytics-pserver:v5.0'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.1'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-pserver:latest sonatanfv/tng-analytics-pserver:v5.1'
+                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-pserver:v5.1'
+                    sh 'docker push sonatanfv/tng-analytics-pserver:v5.1'
                     
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest registry.sonata-nfv.eu:5000/tng-analytics-results:v5.0'
-                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest sonatanfv/tng-analytics-results:v5.0'
-                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-results:v5.0'
-                    sh 'docker push sonatanfv/tng-analytics-results:v5.0'
-                }
-            }
-            stage('Deploying in v5.0 servers') {
-                steps {
-                    sh 'rm -rf tng-devops || true'
-                    sh 'git clone https://github.com/sonata-nfv/tng-devops.git'
-                    dir(path: 'tng-devops') {
-                    sh 'ansible-playbook roles/vnv.yml -i environments -e "target=sta-vnv-v5-0 component=analytics"'
-                    }
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest registry.sonata-nfv.eu:5000/tng-analytics-results:v5.1'
+                    sh 'docker tag registry.sonata-nfv.eu:5000/tng-analytics-results:latest sonatanfv/tng-analytics-results:v5.1'
+                    sh 'docker push registry.sonata-nfv.eu:5000/tng-analytics-results:v5.1'
+                    sh 'docker push sonatanfv/tng-analytics-results:v5.1'
                 }
             }
         }
