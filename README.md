@@ -8,7 +8,7 @@ This is a 5GTANGO component that aims to provide insights for the efficiency of 
 
 ## Installing / Getting started
 
-This component is implemented in spring boot framework.boot 2.1.7.RELEASE, python flask 1.1.1 and opencpu 2.1 
+This component is implemented in spring boot framework.boot 2.1.7.RELEASE, python flask 1.0.2 and opencpu 2.1 
 
 ### Installing from code
 
@@ -78,6 +78,7 @@ To contribute to the development of this 5GTANGO component, you may use the very
 * [Spring boot Framework 2.0.3 RELEASE](https://spring.io/projects/spring-boot) - Used application framework
 * [R Project](https://www.r-project.org/)
 * [Opencpu server](https://www.opencpu.org/) 
+* [Pyhton Flask](https://palletsprojects.com/p/flask/) 
 
 ### Prerequisites
 Be sure the apparmor-utils installed at the host machine in case you run the tng-analytics-engine as container
@@ -103,7 +104,8 @@ The most up-to-date version is v5.0. For the versions available, see the [link](
 The configuration of the micro-service is done through the following environment variables, defined in the Dockerfile:
   
 * MONGO_DB, which defines the mongo database, where all necessary objects are stored in;  
-* PHYSIOG_URL, which defines the analytics server where the analysis are executed;  
+* PHYSIOG_URL,  which defines the  R analytics server where the R packages are hosted are executed;  
+* ENV PANALYTICS_URL, which defines the  python analytics server where the python packages are hosted are executed;  
 * ENV MONITORING_ENGINE, which defines where the monitoring metrics are stored and how to fech them;  
 * ENV PROMETHEUS_URL, which defines where the monitoring metrics are stored and how to fech them;  
 * ENV REPOSITORY_URL, which defines the repository where the VnV test results are stored;  
