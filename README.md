@@ -13,7 +13,7 @@ This component is implemented in spring boot framework.boot 2.1.7.RELEASE, pytho
 ### Installing from code
 
 The tng-analytics-engine is composed from four microservices. The tng-analytics-engine, the tng-analytics-rserver, the tng-analytics-pserver and the tng-analytics-results.
-tng-analytics-engine consists of the microservice than manages the creation and registration of new analytics services and the execution of analytic processes. The tng-analytics-pserver and tng-analytics-pserver host and execute packages implemented in python and R statistical languages.tng-analytics-results stores the analytic results and makes them available to the end user via the tng-analytics-engine.    
+`tng-analytics-engine` consists of the microservice that manages the creation and registration of new analytics services and the execution of analytic processes. The `tng-analytics-pserver` and `tng-analytics-pserver` host and execute packages implemented in python and R statistical languages. `tng-analytics-results` stores the analytic results and makes them available to the end user via the tng-analytics-engine.    
 To have up and running then tng-analytics-engine from code, please do the following:
 ```  
 $ git clone https://github.com/sonata-nfv/tng-analytics-engine.git # Clone this repository
@@ -23,7 +23,7 @@ $ java -jar target/tng-analytics-engine-0.0.1-SNAPSHOT.jar # use the development
 ```  
 Note: See the [Configuration](https://github.com/sonata-nfv/tng-analytics-engine/#configuration) section below for other environment variables that can be used.
 
-Everything being fine, you'll have a server running on that session, on port 8083. You can access it by using curl, like in:
+Everything being fine, you'll have a server running on that session, on port 8085. You can access it by using curl, like in:
 ```
 $ curl <host name>:8085/api/vi
 ```
@@ -31,7 +31,7 @@ To have up and running then tng-analytics-rserver from code, please do the follo
 * Install the [R Project](https://www.r-project.org/) for Statistical Computing mininum version (R version 3.4.4 (2018-03-15))
 * Install the [Opencpu server](https://www.opencpu.org/) for Embedded Scientific Computing 
 * Install the [rstudio](https://www.rstudio.com/) in case you want to create a new analytics package
-* Install the [Physiognomica](https://github.com/ubitech/Physiognomica) R package
+* Install the [Physiognomica](https://github.com/ubitech/Physiognomica) R package (this is a default analytic package)
 ```
 # Requires Ubuntu 18.04 (Bionic) or 16.04 (Xenial)
 sudo add-apt-repository -y ppa:opencpu/opencpu-2.1
