@@ -8,11 +8,12 @@ This is a 5GTANGO component that aims to provide insights for the efficiency of 
 
 ## Installing / Getting started
 
-This component is implemented in spring boot framework.boot, 2.1.7.RELEASE
+This component is implemented in spring boot framework.boot 2.1.7.RELEASE, python flask 1.1.1 and opencpu 2.1 
 
 ### Installing from code
 
-The tng-analytics-engine is composed from two microservices. The tng-analytics-engine and the tng-analytics-rserver.  
+The tng-analytics-engine is composed from four microservices. The tng-analytics-engine, the tng-analytics-rserver, the tng-analytics-pserver and the tng-analytics-results.
+tng-analytics-engine consists of the microservice than manages the creation and registration of new analytics services and the execution of analytic processes. The tng-analytics-pserver and tng-analytics-pserver host and execute packages implemented in python and R statistical languages.tng-analytics-results stores the analytic results and makes them available to the end user via the tng-analytics-engine.    
 To have up and running then tng-analytics-engine from code, please do the following:
 ```  
 $ git clone https://github.com/sonata-nfv/tng-analytics-engine.git # Clone this repository
