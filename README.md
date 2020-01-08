@@ -71,6 +71,8 @@ With these commands, you:
     Run the MongoDB container within the tango network;
     Run the tng-analytics-engine container within the tango network;
     Run the tng-analytics-rserver container
+    Run the tng-analytics-pserver container
+    Run the tng-analytics-results container
     
 ## Developing
 
@@ -100,7 +102,6 @@ Developing this micro-service is straightforward with a low amount of necessary 
 
 *  Update properly the application.properties and / of docker-compose.yml files
 *  Open the tng-analytics-engine with an Integrated development environment (IDE) that support java (ex.Netbeans)
-*  Create new analytic packages with Integrated development environment (IDE) that support R  (ex.Rstudio)
 
 ### Submiting changes
 Changes to the repository can be requested using [this](https://github.com/sonata-nfv/tng-analytics-engine/issues) repository's issues and [pull requests](https://github.com/sonata-nfv/tng-analytics-engine/pulls) mechanisms.
@@ -151,7 +152,5 @@ The following lead developers are responsible for this repository and have admin
 
 * Please use the GitHub issues to report bugs.
 
----notes for running locally the containers---
-docker run -i -p 8086:80 -v asset-volume:/var/www/html  -td tng-analytics-engine
-docker run -p 8085:8085  --volumes-from tng-analytics-results  --name tng-analytics-engine tng-analytics-engine
+
 
