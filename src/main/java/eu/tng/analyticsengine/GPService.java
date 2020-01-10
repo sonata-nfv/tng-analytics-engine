@@ -472,8 +472,8 @@ public class GPService {
 
         ///////////////
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.postForObject(analytic_service_url, request_json, String.class);
-        System.out.println("ekana post request"+result);
+        String result_test = restTemplate.postForObject(analytic_service_url, request_json, String.class);
+        System.out.println("ekana post request"+result_test);
         ///////////////
         
         //logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
