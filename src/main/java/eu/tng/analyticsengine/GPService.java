@@ -445,7 +445,8 @@ public class GPService {
         request_json.put("prometheus_url", "'" + prometheusURL + "'");
         request_json.put("metrics", metrics.toString());
         request_json.put("step", "'" + step + "'");
-        request_json.put("periods", periods.toString());
+        //request_json.put("periods", periods.toString());
+        request_json.put("periods", periods);
 
         StringEntity entity = new StringEntity(request_json.toString(), ContentType.APPLICATION_JSON);
 
