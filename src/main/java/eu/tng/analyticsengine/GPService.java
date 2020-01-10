@@ -470,6 +470,12 @@ public class GPService {
         System.out.println("statuscode" + statuscode);
         logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url + " with payload " + request_json, "200");
 
+        ///////////////
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.postForObject(analytic_service_url, request_json, String.class);
+        System.out.println("ekana post request"+result);
+        ///////////////
+        
         //logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
         //ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
         String myresponse = "";
