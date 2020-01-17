@@ -390,7 +390,6 @@ public class GPService {
         String name = analytic_service.getString("name");
         String vendor = analytic_service.getString("vendor");
 
-        //RestTemplate restTemplate = new RestTemplate();
         JSONArray metrics = null;
         if (vendor.equalsIgnoreCase("5gtango.vnv")) {
 
@@ -429,60 +428,59 @@ public class GPService {
         logsFormat.createLogInfo("I", timestamp.toString(), "Connect to prometheus", prometheusURL, "200");
         logsFormat.createLogInfo("I", timestamp.toString(), "Fetch Metrics from prometheus", metrics.toString(), "200");
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//        MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
-//        map3.add("prometheus_url", "'" + prometheusURL + "'");
-//        map3.add("metrics", metrics.toString());
-//        map3.add("step", "'" + step + "'");
-//        map3.add("periods", periods.toString());
-        //       HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
         AnalyticService as = analyticServiceRepository.findByName(name);
 
         String analytic_service_partial_url = as.getUrl();
 
-        JSONObject request_json = new JSONObject();
-        request_json.put("prometheus_url", "'" + prometheusURL + "'");
-        request_json.put("metrics", metrics.toString());
-        request_json.put("step", "'" + step + "'");
-        //request_json.put("periods", periods.toString());
-        request_json.put("periods", periods);
-
-        StringEntity entity = new StringEntity(request_json.toString(), ContentType.APPLICATION_JSON);
-
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
+        boolean success_response = false;
+        int statuscode = 0;
+        String myresponse = "";
         String analytic_service_url = "";
         if (analytic_service_partial_url.contains("ocpu")) {
-            //map3.add("enriched", "true");
-            request_json.put("enriched", "true");
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            MultiValueMap<String, String> map3 = new LinkedMultiValueMap<String, String>();
+            map3.add("prometheus_url", "'" + prometheusURL + "'");
+            map3.add("metrics", metrics.toString());
+            map3.add("step", "'" + step + "'");
+            map3.add("periods", periods.toString());
+            HttpEntity<MultiValueMap<String, String>> physiognomicaRequest3 = new HttpEntity<>(map3, headers);
+            map3.add("enriched", "true");
+            logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url + " with payload " + map3, "200");
             analytic_service_url = physiognomicaServerURL + as.getUrl();
+            ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
+            success_response = response3.getStatusCode().is2xxSuccessful();
+
+            myresponse = response3.getBody();
         } else {
+            JSONObject request_json = new JSONObject();
+            request_json.put("prometheus_url", "'" + prometheusURL + "'");
+            request_json.put("metrics", metrics.toString());
+            request_json.put("step", "'" + step + "'");
+            request_json.put("periods", periods);
+            StringEntity entity = new StringEntity(request_json.toString(), ContentType.APPLICATION_JSON);
+            HttpClient httpClient = HttpClientBuilder.create().build();
             analytic_service_url = panalyticsServerURL + as.getUrl();
+            HttpPost request = new HttpPost(analytic_service_url);
+            request.setEntity(entity);
+
+            logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url + " with payload " + request_json, "200");
+
+            HttpResponse testresponse = httpClient.execute(request);
+            statuscode = testresponse.getStatusLine().getStatusCode();
+            System.out.println("statuscode" + statuscode);
+
+            if (statuscode == 200 || statuscode == 201) {
+                success_response = true;
+                org.apache.http.HttpEntity entity1 = testresponse.getEntity();
+                myresponse = EntityUtils.toString((org.apache.http.HttpEntity) entity1);
+
+            }
         }
 
-        HttpPost request = new HttpPost(analytic_service_url);
-        request.setEntity(entity);
+        if (success_response) {
 
-        HttpResponse testresponse = httpClient.execute(request);
-        int statuscode = testresponse.getStatusLine().getStatusCode();
-
-        System.out.println("statuscode" + statuscode);
-        logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url + " with payload " + request_json, "200");
-
-        ///////////////
-        RestTemplate restTemplate = new RestTemplate();
-        String result_test = restTemplate.postForObject(analytic_service_url, request_json, String.class);
-        System.out.println("ekana post request"+result_test);
-        ///////////////
-        
-        //logsFormat.createLogInfo("I", timestamp.toString(), "Request analytic service", analytic_service_url, "200");
-        //ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
-        String myresponse = "";
-        if (statuscode == 200 || statuscode == 201) {
-
-            org.apache.http.HttpEntity entity1 = testresponse.getEntity();
-            myresponse = EntityUtils.toString((org.apache.http.HttpEntity) entity1);
             logsFormat.createLogInfo("I", timestamp.toString(), "Response from analytic service", myresponse, "200");
 
             //save the analytic result            
