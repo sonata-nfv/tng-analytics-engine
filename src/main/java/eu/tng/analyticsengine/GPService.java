@@ -451,8 +451,8 @@ public class GPService {
             analytic_service_url = physiognomicaServerURL + as.getUrl();
             ResponseEntity<String> response3 = restTemplate.postForEntity(analytic_service_url, physiognomicaRequest3, String.class);
             success_response = response3.getStatusCode().is2xxSuccessful();
-
             myresponse = response3.getBody();
+
         } else {
             JSONObject request_json = new JSONObject();
             request_json.put("prometheus_url", "'" + prometheusURL + "'");
@@ -516,7 +516,7 @@ public class GPService {
                         result.put("type", "csv");
                     } else if (line.contains("json")) {
                         result.put("type", "json");
-                    } else if (line.contains("jpg") || line.contains("png")) {
+                    } else if (line.contains("jpg") || line.contains("png") || line.contains("svg")) {
                         result.put("type", "img");
                     } else {
                         result.put("type", "txt");
