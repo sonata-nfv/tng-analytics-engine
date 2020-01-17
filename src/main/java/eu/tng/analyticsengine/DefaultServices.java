@@ -62,6 +62,7 @@ public class DefaultServices {
         List<String> results1 = new LinkedList<>();
         results1.add("correlogram.html");
         results1.add("correlogram.svg");
+        results1.add("lib");
         as1.setResults(results1);
         analyticServiceRepository.save(as1);
 

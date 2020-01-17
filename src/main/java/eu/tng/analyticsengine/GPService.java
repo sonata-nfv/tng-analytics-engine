@@ -516,6 +516,10 @@ public class GPService {
                         result.put("type", "csv");
                     } else if (line.contains("json")) {
                         result.put("type", "json");
+                    } else if (line.contains("css")) {
+                        result.put("type", "css");
+                    } else if (line.contains("js")) {
+                        result.put("type", "js");
                     } else if (line.contains("jpg") || line.contains("png") || line.contains("svg")) {
                         result.put("type", "img");
                     } else {
